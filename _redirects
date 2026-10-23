@@ -1,0 +1,5 @@
+
+# PTW proxy -- same-origin proxy for the Razorpay order function.
+# PTW proxy status 200 proxies server-side; the browser never sees a second origin,
+# PTW proxy so there is no preflight and no CORS requirement.
+/api/razorpay-order  https://gorgeous-phoenix-22401f.netlify.app/.netlify/functions/razorpay-order  200!

@@ -1,0 +1,33 @@
+# Netlify serves everything with "public, max-age=0, must-revalidate" by
+# default, which means the browser re-checks EVERY image and audio file with
+# the server on EVERY view. For the extension that is a network round-trip
+# per hover, and it is why the extension degrades the moment this site is
+# slow or unreachable: nothing is ever really cached.
+#
+# Card illustrations and audio are generated once and addressed by concept id
+# or content hash, so they are safe to cache hard. 30 days rather than a year
+# with `immutable` is deliberate: some audio files HAVE been corrected in
+# place before (the katakana "to " fix), and `immutable` would leave those
+# users stuck with the old file until they cleared their cache. 30 days keeps
+# essentially all of the benefit with a bounded worst case.
+/assets/*
+  Cache-Control: public, max-age=2592000
+
+# Data files change on deploy and the service worker already fetches them
+# network-first, so they must stay revalidated.
+#
+# Access-Control-Allow-Origin: * lets the browser extension fetch() these
+# same public, unauthenticated data files (JSON, no user data, already
+# served with no auth to anyone) directly from picturethewords.com rather
+# than bundling a copy locally -- confirmed missing via a live curl check
+# (2026-09-20) before assuming it was already there: without this header a
+# cross-origin fetch() from a chrome-extension:// origin is blocked by the
+# browser even though the same URL loads fine for a same-origin <img>/
+# <audio> tag, which needs no CORS grant at all. This is what makes the
+# extension's sentence search (reading sentence-search-index.json) and any
+# other future extension feature that needs to *read* a /data/* file,
+# rather than just point a media tag at it, possible without shipping a
+# multi-megabyte copy inside the extension package.
+/data/*
+  Cache-Control: public, max-age=0, must-revalidate
+  Access-Control-Allow-Origin: *

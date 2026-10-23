@@ -1,0 +1,3050 @@
+/* ================================================================
+   PICTURE THE WORDS v2.0 — Semantic Visual Vocabulary
+   Tokens → Layout → Components → Utilities
+   ================================================================ */
+
+/* ── Tokens ─────────────────────────────────────────────────────*/
+:root {
+  --bg:        #F4FBFC;
+  --surface:   #FFFFFF;
+  --ink:       #0C3846;
+  --ink-dim:   #2A7387;
+  --ink-muted: #7a9aad;
+  --border:    #c8dfe6;
+  --teal:      #2A7387;
+  --teal-dark: #0C3846;
+  --teal-lt:   #5EB0C8;
+  --teal-50:   #E4F4F8;
+  --gold:      #c9a84c;
+  --aqua:      #3FC9B4;
+  --aqua-primary: #2BAE9E;
+  --aqua-dark:    #1B7882;
+  --aqua-lt:      #48CDB8;
+  --aqua-soft:    #80DED9;
+  --aqua-mist:    #EBF9F8;
+
+  --sidebar-w: 240px;
+  --header-h:  56px;
+  --card-w:    300px;
+  --card-h:    580px;
+  --radius:    16px;
+  --radius-sm: 8px;
+  --shadow:    0 4px 20px rgba(12,56,70,.12);
+  --shadow-lg: 0 12px 40px rgba(12,56,70,.2);
+}
+
+/* ── Reset ──────────────────────────────────────────────────────*/
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', 'Noto Sans JP', sans-serif;
+  /* White page. --bg stays defined as the pale teal tint because inputs,
+     buttons and hover states use it deliberately; only the PAGE is white. */
+  background: #FFFFFF;
+  color: var(--ink);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Pages ──────────────────────────────────────────────────────*/
+.page { display: none; }
+#page-home { display: none; flex-direction: column; min-height: 100vh; }
+#page-app  { display: none; }
+#page-home.active { display: flex; }
+#page-app.active  { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+
+/* ── HOME — Nav ─────────────────────────────────────────────────*/
+.home-nav {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; gap: 16px;
+  padding: 0 28px;
+  height: var(--header-h);
+  background: rgba(255,255,255,.94);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-brand {
+  display: flex; align-items: center; gap: 10px;
+  cursor: pointer; text-decoration: none;
+}
+.nav-logo { width: 32px; height: 32px; border-radius: 22%; object-fit: contain; display: block; }
+.nav-brand-name { font-size: 15px; font-weight: 700; color: var(--teal-dark); letter-spacing: -.01em; }
+.nav-spacer { flex: 1; }
+.nav-search-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 14px; border-radius: 20px;
+  border: 1.5px solid var(--border);
+  background: var(--bg); cursor: pointer;
+  font-size: 13px; color: var(--ink-dim);
+  transition: border-color .15s;
+}
+.nav-search-btn:hover { border-color: var(--teal-lt); }
+.nav-search-btn svg { width: 14px; height: 14px; }
+
+/* ── HOME — Hero ────────────────────────────────────────────────*/
+#page-home { background: #FFFFFF; }
+
+.hero {
+  flex: 1;
+  max-width: 1100px; width: 100%; margin: 0 auto;
+  padding: 72px 36px 56px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center;
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 4px 12px; border-radius: 20px;
+  background: rgba(42,115,135,.1); border: 1px solid rgba(42,115,135,.2);
+  font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--teal); margin-bottom: 20px;
+}
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(36px, 4.5vw, 58px);
+  font-weight: 700; line-height: 1.1;
+  color: var(--teal-dark); margin-bottom: 18px;
+}
+.hero-title em { color: var(--teal); font-style: italic; }
+.hero-subhead {
+  font-size: 17px; font-weight: 600; color: var(--teal);
+  margin-bottom: 14px;
+}
+.hero-body {
+  font-size: 15px; line-height: 1.75; color: var(--ink-dim);
+  margin-bottom: 32px; max-width: 440px;
+}
+.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn-primary {
+  padding: 13px 26px; border-radius: var(--radius-sm);
+  background: var(--teal-dark); color: #fff;
+  border: none; cursor: pointer; font-size: 14px; font-weight: 700;
+  transition: background .2s, transform .15s;
+  box-shadow: 0 4px 14px rgba(12,56,70,.22);
+}
+.btn-primary:hover { background: var(--teal); transform: translateY(-1px); }
+.btn-secondary {
+  padding: 13px 26px; border-radius: var(--radius-sm);
+  background: transparent; border: 2px solid var(--teal-lt);
+  color: var(--teal); cursor: pointer; font-size: 14px; font-weight: 600;
+  transition: border-color .2s, color .2s;
+}
+.btn-secondary:hover { border-color: var(--teal); color: var(--teal-dark); }
+
+/* ── HOME — Category grid ───────────────────────────────────────*/
+.home-cats {
+  padding: 56px 36px;
+  max-width: 1100px; width: 100%; margin: 0 auto;
+}
+.home-cats-title {
+  text-align: center; margin-bottom: 32px;
+  font-family: 'Playfair Display', serif;
+  font-size: 26px; color: var(--teal-dark);
+}
+.home-cats-title em { color: var(--teal); font-style: italic; }
+#home-cat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 200px));
+  justify-content: center;
+  gap: 16px;
+}
+.cat-tile {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 24px 16px 20px;
+  text-align: center;
+  cursor: pointer;
+  border: 1.5px solid var(--border);
+  transition: transform .18s, box-shadow .18s, border-color .18s;
+  box-shadow: 0 2px 8px rgba(12,56,70,.06);
+}
+.cat-tile:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+  border-color: var(--tile-color, var(--teal-lt));
+}
+.cat-tile-icon { display: block; font-size: 30px; margin-bottom: 10px; }
+.cat-tile-name { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+.cat-tile-count { font-size: 11px; color: var(--ink-muted); }
+
+/* ── HOME — Vision ──────────────────────────────────────────────*/
+.home-vision {
+  text-align: center; padding: 40px 36px 16px;
+}
+.home-vision-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px; font-style: italic; color: var(--ink-muted);
+  opacity: .8; letter-spacing: .03em;
+}
+
+/* ── HOME — Footer ──────────────────────────────────────────────*/
+.home-footer {
+  padding: 20px 36px;
+  border-top: 1px solid var(--border);
+  text-align: center; font-size: 11px;
+  color: var(--ink-muted); max-width: 1100px; width: 100%; margin: 0 auto;
+}
+.ptw-footer {
+  padding: 16px 36px;
+}
+.ptw-footer-inner {
+  max-width: 1100px; margin: 0 auto;
+  display: flex; align-items: center; gap: 12px;
+}
+.ptw-footer-logo { width: 28px; height: 28px; border-radius: 22%; object-fit: contain; }
+.ptw-copyright { font-size: 11px; color: var(--ink-muted); }
+
+/* ── APP — Shell ────────────────────────────────────────────────*/
+.app-topbar {
+  /* z-index 550, not the more obvious 200: the account dropdown that lives
+     here needs to stay clickable even while #focus-overlay (a concept
+     card's full detail view, z-index 500) is open -- otherwise the avatar
+     button sits underneath the card overlay's backdrop and every dropdown
+     option (My Notes, Review, My Categories, History) becomes unreachable
+     the moment any card is open, which is most of a mobile session. A
+     child element can never out-stack an ancestor's own position in a
+     higher-level stacking context, so this has to be set here on the
+     topbar itself, not just on .avatar-menu. Same reasoning already
+     applied to #add-category-overlay below (z-index 600, one layer above
+     this, since it's opened by a button that lives inside #focus-overlay). */
+  position: sticky; top: 0; z-index: 550;
+  height: var(--header-h);
+  background: rgba(255,255,255,.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1.5px solid var(--teal-50);
+  display: flex; align-items: center; gap: 12px;
+  padding: 0 20px;
+  box-shadow: 0 2px 10px rgba(12,56,70,.07);
+}
+.topbar-home {
+  display: flex; align-items: center; gap: 8px;
+  cursor: pointer; padding: 5px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  transition: background .15s;
+}
+.topbar-home:hover { background: var(--bg); }
+.topbar-logo { width: 22px; height: 22px; border-radius: 22%; object-fit: contain; }
+.topbar-crumb-wrap { display: flex; align-items: center; gap: 6px; }
+.topbar-sep { color: var(--border); font-size: 16px; }
+#topbar-crumb { font-size: 14px; font-weight: 600; color: var(--teal); }
+.topbar-actions { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+.topbar-btn {
+  padding: 5px 12px; border-radius: 20px;
+  border: 1.5px solid var(--border); background: var(--bg);
+  font-size: 12px; font-weight: 600; color: var(--ink-dim);
+  cursor: pointer; transition: border-color .15s, color .15s;
+}
+.topbar-btn:hover, .topbar-btn.active { border-color: var(--teal-lt); color: var(--teal); }
+.topbar-search-btn {
+  display: flex; align-items: center; gap: 5px;
+  padding: 5px 12px; border-radius: 20px;
+  border: 1.5px solid var(--border); background: var(--bg);
+  font-size: 12px; color: var(--ink-dim); cursor: pointer;
+  transition: border-color .15s;
+}
+.topbar-search-btn:hover { border-color: var(--teal-lt); }
+
+/* ── APP — Layout ───────────────────────────────────────────────*/
+.app-body {
+  display: flex; flex: 1; overflow: hidden;
+}
+
+/* ── Sidebar ────────────────────────────────────────────────────
+   White-surface redesign (2026-10-06): was a solid dark-teal
+   (--teal-dark) panel with white text; now a white panel with a
+   right-hand border for separation, dark ink text, and --aqua as the
+   accent for active/hover states instead of white-opacity overlays. */
+.app-sidebar {
+  width: var(--sidebar-w);
+  flex-shrink: 0;
+  background: var(--surface);
+  color: var(--ink);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  position: sticky; top: var(--header-h);
+  height: calc(100vh - var(--header-h));
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.app-sidebar::-webkit-scrollbar { width: 4px; }
+.app-sidebar::-webkit-scrollbar-thumb { background: rgba(12,56,70,.15); border-radius: 2px; }
+
+.sb-domain { border-bottom: 1px solid var(--border); }
+.sb-domain-head {
+  display: flex; align-items: center; gap: 8px;
+  padding: 11px 16px;
+  cursor: pointer;
+  font-size: 13px; font-weight: 600;
+  color: var(--ink-dim);
+  transition: background .15s, color .15s;
+}
+.sb-domain-head:hover { background: var(--teal-50); color: var(--ink); }
+.sb-domain-head.active { color: var(--teal-dark); background: rgba(63,201,180,.14); border-left: 3px solid var(--aqua); padding-left: 13px; }
+.sb-icon { font-size: 14px; flex-shrink: 0; }
+.sb-label { flex: 1; }
+.sb-count { font-size: 11px; color: var(--ink-muted); }
+.sb-subcats { display: none; }
+.sb-domain.open .sb-subcats { display: block; }
+.sb-subcat {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 7px 16px 7px 36px;
+  cursor: pointer; font-size: 12px; color: var(--ink-muted);
+  transition: color .12s, background .12s;
+}
+.sb-subcat:hover { color: var(--ink); background: var(--teal-50); }
+.sb-subcat.active { color: var(--teal-dark); background: rgba(63,201,180,.1); font-weight: 600; }
+.sb-subcat-count { font-size: 10px; color: var(--ink-muted); }
+
+/* ── Main content ───────────────────────────────────────────────*/
+.app-main {
+  flex: 1; overflow-y: auto;
+  padding: 24px 24px 80px;
+  background: var(--bg);
+}
+
+/* ── Category header ─────────────────────────────────────────────*/
+.cat-header {
+  border-radius: var(--radius);
+  padding: 24px 28px;
+  margin-bottom: 24px;
+  display: flex; align-items: center; gap: 16px;
+  color: #fff;
+}
+.cat-header-icon { font-size: 32px; }
+.cat-header-info { flex: 1; }
+#cat-header-label { font-size: 22px; font-weight: 700; }
+#cat-header-count { font-size: 13px; opacity: .75; margin-top: 2px; }
+
+/* ── Deck ────────────────────────────────────────────────────────*/
+.deck {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: flex-start;
+  padding: 4px 0;
+}
+.deck.horizontal {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 300px));
+  gap: 24px;
+  justify-content: center;
+}
+
+/* ── Card ────────────────────────────────────────────────────────*/
+.card-wrap {
+  width: var(--card-w);
+  height: var(--card-h);
+  perspective: 1600px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.card-inner {
+  width: 100%; height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform .55s cubic-bezier(.4,0,.2,1);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.card-wrap.flipped .card-inner { transform: rotateY(180deg); }
+
+.card-face {
+  position: absolute; inset: 0;
+  border-radius: var(--radius);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
+}
+.card-front {
+  background: var(--surface);
+  display: flex; flex-direction: column;
+}
+.card-back {
+  background: var(--surface);
+  transform: rotateY(180deg);
+  display: flex; flex-direction: column;
+}
+
+/* Front elements */
+.star-btn {
+  position: absolute; top: 10px; right: 10px; z-index: 3;
+  width: 28px; height: 28px; border-radius: 50%;
+  background: rgba(255,255,255,.85); border: none; cursor: pointer;
+  font-size: 14px; color: var(--ink-muted);
+  display: flex; align-items: center; justify-content: center;
+  transition: color .15s, background .15s;
+  box-shadow: 0 1px 4px rgba(0,0,0,.1);
+}
+.star-btn.starred { color: var(--gold); background: rgba(255,255,255,.97); }
+/* Opposite corner from .star-btn, only rendered on tiles inside a
+   removable list (My Categories detail, Favorites) -- takes the card off
+   THAT list without touching its global favourite/star state. */
+.tile-remove-btn {
+  position: absolute; top: 10px; left: 10px; z-index: 3;
+  width: 28px; height: 28px; border-radius: 50%;
+  background: rgba(255,255,255,.85); border: none; cursor: pointer;
+  font-size: 13px; color: #a02020; line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s;
+  box-shadow: 0 1px 4px rgba(0,0,0,.1);
+}
+.tile-remove-btn:hover { background: rgba(255,255,255,.97); }
+/* Small text-button delete action used in the account-overlay list rows
+   (My Categories, My Notes, History) -- same red as the tile ✕ / Remove
+   from Review, so "this takes something away" reads consistently
+   everywhere in the account panel. */
+.list-remove-btn {
+  background: none; border: none; cursor: pointer;
+  color: #a02020; font-size: 12px; font-weight: 600;
+  padding: 4px 6px; flex-shrink: 0;
+}
+.list-remove-btn:hover { text-decoration: underline; }
+.expand-btn {
+  position: absolute; top: 10px; left: 10px; z-index: 3;
+  width: 28px; height: 28px; border-radius: 50%;
+  background: rgba(255,255,255,.85); border: none; cursor: pointer;
+  font-size: 13px; color: var(--teal);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 1px 4px rgba(0,0,0,.1);
+  transition: background .15s;
+}
+.expand-btn:hover, .expand-btn-back:hover { background: rgba(255,255,255,.97); }
+.expand-btn-back {
+  background: rgba(255,255,255,.15); color: rgba(255,255,255,.7);
+  border: 1px solid rgba(255,255,255,.2); box-shadow: none;
+}
+.front-img-wrap {
+  flex: 1; min-height: 0; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.front-img-wrap img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.flip-tag {
+  padding: 10px 16px;
+  font-size: 11px; font-weight: 600; letter-spacing: .06em;
+  color: var(--ink-muted); text-align: center;
+  background: var(--bg); border-top: 1px solid var(--border);
+}
+
+/* Back elements */
+.back-head {
+  padding: 18px 18px 14px;
+  background: var(--accent, var(--teal));
+  flex-shrink: 0;
+}
+.back-kanji {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 28px; font-weight: 700;
+  color: #fff; line-height: 1.2;
+  margin-bottom: 4px;
+}
+.back-kana { font-size: 14px; color: rgba(255,255,255,.75); margin-bottom: 8px; }
+.back-domain-tag {
+  display: inline-block;
+  font-size: 10px; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; color: rgba(255,255,255,.85);
+  background: rgba(255,255,255,.15); padding: 2px 8px; border-radius: 10px;
+}
+.back-body {
+  flex: 1; overflow-y: auto; padding: 14px 14px 8px;
+}
+.back-empty { font-size: 12px; color: var(--ink-muted); text-align: center; padding-top: 16px; }
+
+/* Word network */
+.net-row {
+  display: flex; align-items: flex-start; gap: 8px;
+  margin-bottom: 10px;
+}
+.net-label {
+  font-size: 10px; font-weight: 700; letter-spacing: .06em;
+  text-transform: uppercase; flex-shrink: 0;
+  margin-top: 3px; min-width: 52px;
+}
+.net-label-syn { color: var(--teal); }
+.net-label-ant { color: #c0392b; }
+.net-label-rel { color: #7f8c8d; }
+.net-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.net-chip {
+  padding: 3px 10px; border-radius: 12px;
+  font-size: 12px; cursor: pointer; border: none;
+  transition: opacity .15s;
+}
+.net-syn { background: rgba(42,115,135,.1); color: var(--teal); }
+.net-ant { background: rgba(192,57,43,.08); color: #c0392b; }
+.net-rel { background: rgba(127,140,141,.1); color: var(--ink-dim); }
+.net-chip:hover { opacity: .7; }
+
+/* ── Focus overlay ──────────────────────────────────────────────*/
+#focus-overlay {
+  display: none; position: fixed; inset: 0; z-index: 500;
+  background: rgba(5,20,35,.82);
+  backdrop-filter: blur(6px);
+  align-items: center; justify-content: center;
+  padding: 20px;
+  /* Belt and suspenders alongside #focus-card-inner's own internal
+     scroll: on a phone, ensureFocusOverlayClearsTopbar() can push the
+     card down with a large paddingTop (to clear a tall wrapped
+     topbar), which can exceed the viewport on its own. Letting the
+     overlay itself scroll means the card's bottom edge is always
+     reachable even then, instead of being pushed off-screen with
+     nothing to scroll it back into view. */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+#focus-overlay.open { display: flex; }
+/* Opened from History/My Notes/Favorites/My Categories, which stay open
+   underneath (see openConcept() in script.js) -- z-index 560, same as
+   #account-overlay/#notes-overlay, would leave the card tied with (and
+   in DOM order, under) the list, invisible behind its opaque backdrop. */
+#focus-overlay.above-list { z-index: 570; }
+.focus-close {
+  /* Above .app-topbar (550), not just #focus-overlay (500) -- belt and
+     suspenders alongside ensureFocusOverlayClearsTopbar()'s padding fix,
+     so the close button is reachable even if that measurement is ever
+     off by a few pixels. */
+  position: fixed; top: 16px; right: 20px; z-index: 560;
+  width: 38px; height: 38px; border-radius: 50%;
+  background: rgba(255,255,255,.15); border: 1.5px solid rgba(255,255,255,.3);
+  color: #fff; font-size: 18px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+#focus-card-wrap {
+  width: min(300px, calc(100vw - 40px));
+  height: min(580px, calc(100svh - 80px));
+  perspective: 1600px; cursor: pointer;
+}
+#focus-card-inner {
+  width: 100%; height: 100%; position: relative;
+  transform-style: preserve-3d;
+  transition: transform .55s cubic-bezier(.4,0,.2,1);
+  border-radius: 20px;
+  box-shadow: 0 24px 80px rgba(0,0,0,.6);
+}
+#focus-card-inner.flipped { transform: rotateY(180deg); }
+#focus-card-inner .card-face {
+  border-radius: 20px; position: absolute; inset: 0;
+  backface-visibility: hidden; overflow: hidden;
+  display: flex; flex-direction: column;
+}
+#focus-card-inner .card-back { overflow-y: auto; }
+
+
+/* Hidden by default (desktop already has the full sidebar); shown only
+   below 640px, same breakpoint that hides .app-sidebar, so exactly one
+   of the two is ever visible. Declared BEFORE the mobile media query
+   below, not after -- two rules of equal specificity resolve by source
+   order regardless of which is inside a (matching) media query, so this
+   used to always lose to its own "display:block" override underneath it. */
+.mobile-category-select {
+  display: none;
+  width: 100%; order: 10; margin-top: 6px;
+  padding: 9px 12px; border-radius: 10px;
+  border: 1.5px solid var(--border); background: var(--surface);
+  color: var(--ink); font-family: inherit; font-size: 13.5px; font-weight: 600;
+}
+
+/* ── Mobile ──────────────────────────────────────────────────────*/
+@media (max-width: 640px) {
+  .hero { grid-template-columns: 1fr; padding: 40px 20px 32px; }
+  .hero-right { display: none; }
+  .nav-links-desk { display: none; }
+  .app-sidebar { display: none; }
+  .card-wrap { width: min(300px, calc(100vw - 32px)); }
+  #home-cat-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+  .mobile-category-select { display: block; }
+}
+
+/* ── Hero stat card ─────────────────────────────────────────────*/
+.hero-right { display: flex; align-items: center; justify-content: center; }
+.hero-stat-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 36px 40px;
+  text-align: center;
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow);
+  max-width: 340px;
+}
+.stat-badge {
+  display: inline-block;
+  font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--teal-dark); background: var(--teal-50);
+  padding: 4px 14px; border-radius: 999px; margin-bottom: 12px;
+}
+.stat-note {
+  margin-top: 16px; font-size: 12.5px; line-height: 1.65; color: var(--ink-dim);
+}
+.stat-note a { color: var(--teal); font-weight: 700; }
+.stat-num {
+  display: block;
+  font-family: 'Playfair Display', serif;
+  font-size: 64px; font-weight: 700; font-style: italic;
+  color: var(--teal); line-height: 1;
+  margin-bottom: 10px;
+}
+.stat-label { font-size: 14px; color: var(--ink-muted); }
+
+/* ── Scrollbar ───────────────────────────────────────────────────*/
+.app-main::-webkit-scrollbar { width: 5px; }
+.app-main::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ================================================================
+   v3.0 ADDITIONS — trilingual concept tiles, direction tabs, audio
+   (Card front now shows the finished, fully-rendered card image
+   directly — no 3D flip needed, since front/back are the same
+   image for now. Sizing/shadow/radius from the original card
+   rules above are kept; only the internals changed.)
+   ================================================================ */
+
+/* Concept grid tiles (homepage-within-category browsing) */
+.card-wrap {
+  perspective: none;
+}
+.card-wrap .front-img-wrap img {
+  object-fit: contain;
+  background: var(--bg);
+}
+.tile-label {
+  padding: 10px 12px;
+  font-size: 13px; font-weight: 600;
+  color: var(--ink); text-align: center;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-radius: 0 0 var(--radius) var(--radius);
+  text-transform: capitalize;
+}
+
+/* Sidebar category dot (replaces the old emoji icon) */
+.sb-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  flex-shrink: 0; display: inline-block;
+}
+.sb-domain-head { display: flex; align-items: center; gap: 10px; }
+
+/* Concept detail view inside the focus overlay */
+#focus-card-inner {
+  display: flex; flex-direction: column;
+  background: var(--surface);
+  overflow: hidden;
+}
+.dir-tabs {
+  display: flex; flex-shrink: 0;
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+.dir-tabs::-webkit-scrollbar {
+  height: 4px;
+}
+.dir-tabs::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 2px;
+}
+.dir-tab {
+  flex: 0 0 auto;
+  min-width: 65px;
+  padding: 10px 6px;
+  font-size: 11px; font-weight: 600;
+  color: var(--ink-muted); background: var(--bg);
+  border: none; border-right: 1px solid var(--border);
+  cursor: pointer; transition: background .15s, color .15s;
+  white-space: nowrap;
+  text-align: center;
+}
+.dir-tab:last-child { border-right: none; }
+.dir-tab.active { background: var(--surface); color: var(--teal-dark); }
+.dir-tab:hover { background: var(--teal-50); }
+
+.focus-card-img {
+  flex: 1; min-height: 0;
+  width: 100%; object-fit: contain;
+  background: var(--bg);
+  display: block;
+}
+.focus-audio-row {
+  display: flex; gap: 8px; flex-shrink: 0;
+  padding: 12px; border-top: 1px solid var(--border);
+  background: var(--surface);
+}
+.audio-btn {
+  flex: 1; padding: 10px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border);
+  background: var(--bg); color: var(--teal-dark);
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  transition: background .15s, border-color .15s;
+}
+.audio-btn:hover { background: var(--teal-50); border-color: var(--teal-lt); }
+
+/* Self-contained text logo (no external image file needed) */
+.text-logo {
+  font-size: 22px; line-height: 1; display: inline-block;
+}
+
+/* ================================================================
+   v3.1 ADDITIONS — bugfix + homepage sidebar, settings, script bg
+   ================================================================ */
+
+/* BUGFIX: star button was positioning off-screen because .card-wrap
+   never got position:relative in the v3.0 rebuild (only the old,
+   now-unused .card-inner had it). */
+.card-wrap { position: relative; }
+
+/* Homepage left sidebar (About / Contact Us) */
+.home-sidebar {
+  position: fixed; top: 0; left: 0; bottom: 0; width: 64px;
+  background: var(--teal-dark); z-index: 50;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 16px 0; gap: 10px;
+}
+.home-sidebar-logo { width: 34px; height: 34px; cursor: pointer; margin-bottom: 12px; }
+.home-sidebar-logo img { width: 100%; height: 100%; object-fit: contain; }
+.home-sidebar-link {
+  writing-mode: vertical-rl; text-orientation: mixed;
+  background: none; border: none; color: rgba(255,255,255,.75);
+  font-size: 12px; font-weight: 600; letter-spacing: .03em;
+  cursor: pointer; padding: 10px 0; transition: color .15s;
+}
+.home-sidebar-link:hover { color: #fff; }
+
+/* Shift homepage content right to make room for the sidebar */
+.home-nav, .hero, .home-cats, .home-vision, .ptw-footer { margin-left: 64px; }
+
+/* My Notes overlay - same pattern as auth-overlay.
+   z-index 560, not 200: this box is vertically centered with up to 88vh
+   height (see .info-box), so on a short device its top edge can land
+   underneath .app-topbar (position:sticky, z-index 550) -- exactly the
+   same reasoning already applied there for the avatar dropdown itself.
+   Notes/auth/account all share this. */
+#notes-overlay {
+  display: none; position: fixed; inset: 0; z-index: 560;
+  background: rgba(12,56,70,.55); backdrop-filter: blur(3px);
+  align-items: center; justify-content: center;
+}
+#notes-overlay.open { display: flex; }
+.notes-list-item {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 12px 0; border-bottom: 1px solid var(--border);
+  cursor: pointer;
+}
+.notes-list-item:last-child { border-bottom: none; }
+.notes-list-item img {
+  width: 44px; height: 44px; object-fit: contain; border-radius: 6px;
+  background: var(--bg); flex-shrink: 0;
+}
+.notes-list-item-body { flex: 1; min-width: 0; }
+.notes-list-item-title { font-weight: 700; color: var(--ink); font-size: 13px; margin-bottom: 2px; }
+.notes-list-item-text { font-size: 12.5px; color: var(--ink-dim); white-space: pre-wrap; }
+.notes-empty { text-align: center; color: var(--ink-muted); padding: 24px 0; font-size: 13px; }
+
+/* Auth (Sign Up / Log In) overlay - same pattern as info-overlay */
+#auth-overlay {
+  display: none; position: fixed; inset: 0; z-index: 560;
+  background: rgba(12,56,70,.55); backdrop-filter: blur(3px);
+  align-items: center; justify-content: center;
+}
+#auth-overlay.open { display: flex; }
+#auth-overlay input {
+  padding: 10px 12px; border: 1px solid var(--border, #ccc); border-radius: 8px;
+  font-family: inherit; font-size: 14px;
+}
+#auth-overlay #auth-submit-btn {
+  padding: 10px 12px; border: none; border-radius: 8px;
+  background: var(--teal-dark, #0c3846); color: #fff;
+  font-weight: 600; cursor: pointer;
+}
+.auth-tabs button.active-tab { text-decoration: underline; font-weight: 700; }
+.info-box {
+  position: relative; background: var(--surface);
+  border-radius: var(--radius); max-width: 480px; width: 90%;
+  padding: 36px 32px; box-shadow: var(--shadow);
+  /* This box is centered by its fixed-position overlay parent via plain
+     flexbox (align-items:center), which has no scroll of its own -- with
+     no height limit here, content taller than the viewport (a multi-card
+     deck, a long history list) grew equally past the top AND bottom edges
+     with no way to reach it. My Categories/Favorites/History all share
+     this class, so a single fix here covers all of them. */
+  max-height: 88vh; overflow-y: auto;
+}
+.info-box h3 { font-family: 'Playfair Display', serif; color: var(--teal-dark); margin-bottom: 12px; }
+.info-box p { color: var(--ink-muted); line-height: 1.6; font-size: 14px; }
+
+/* Subtle multi-script decorative background on the hero */
+.hero { position: relative; overflow: hidden; }
+.hero-script-bg {
+  position: absolute; inset: 0; z-index: 0;
+  display: flex; flex-wrap: wrap; gap: 40px;
+  padding: 20px; pointer-events: none;
+  font-family: 'Noto Serif JP', serif;
+}
+.hero-script-bg span {
+  font-size: 64px; color: var(--teal); opacity: .06;
+  font-weight: 700;
+}
+.hero-left, .hero-right { position: relative; z-index: 1; }
+
+/* Homepage study-direction / label-language settings */
+.home-settings {
+  display: flex; gap: 20px; flex-wrap: wrap;
+  margin-top: 22px;
+}
+.home-settings label {
+  display: flex; flex-direction: column; gap: 4px;
+  font-size: 12px; font-weight: 600; color: var(--ink-muted);
+}
+.home-settings select {
+  padding: 8px 10px; border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border); background: var(--surface);
+  color: var(--ink); font-size: 13px; font-weight: 600;
+  cursor: pointer;
+}
+
+@media (max-width: 720px) {
+  .home-sidebar {
+    position: static; width: 100%; flex-direction: row;
+    justify-content: center; padding: 10px 0;
+  }
+  .home-nav, .hero, .home-cats, .home-vision, .ptw-footer { margin-left: 0; }
+  .home-sidebar-link { writing-mode: horizontal-tb; }
+}
+
+/* ================================================================
+   v3.2 ADDITIONS — nav restructure, bigger logo/heading, deco cards
+   ================================================================ */
+
+/* Sidebar removed — undo the v3.1 content shift. `auto`, not a literal 0:
+   .hero and .home-cats are centered blocks (max-width + margin:0 auto) --
+   a literal margin-left:0 here pins their left edge instead of restoring
+   centering, so all the leftover width on a wide viewport collapsed into
+   margin-right alone instead of splitting evenly (confirmed live: a 1440px
+   viewport put the category grid 36px from the left edge and 376px from
+   the right). `auto` restores real centering for those two and is a no-op
+   for .home-nav/.home-vision/.ptw-footer, which have no max-width of their
+   own to center within. */
+.home-nav, .hero, .home-cats, .home-vision, .ptw-footer { margin-left: auto; }
+.home-sidebar, .home-sidebar-logo, .home-sidebar-link { display: none; }
+
+/* Bigger logo + nicer heading font in the nav */
+.nav-logo { width: 44px; height: 44px; object-fit: contain; }
+.nav-brand-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 21px; font-weight: 700;
+  color: var(--teal-dark); letter-spacing: -.01em;
+}
+.nav-brand { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+
+/* About / Contact Us links, now inline in the top nav */
+.nav-info-link {
+  background: none; border: none; cursor: pointer;
+  font-size: 13px; font-weight: 600; color: var(--ink-muted);
+  padding: 8px 14px; margin-left: 6px; border-radius: var(--radius-sm);
+  transition: background .15s, color .15s;
+  text-decoration: none; display: inline-block;
+}
+.nav-info-link:hover { background: var(--teal-50); color: var(--teal-dark); }
+
+/* Eyebrow pill — SVG icon instead of an emoji (renders identically on
+   every OS/browser, unlike emoji which can show as a blank box on
+   older systems) */
+.hero-eyebrow { display: inline-flex; align-items: center; gap: 6px; }
+.hero-eyebrow svg { flex-shrink: 0; }
+
+/* Decorative "to study" cards (JA/HI/EN) fanned out AROUND the stat
+   card — fully visible, not a low-opacity texture hidden behind it.
+   Positioned with non-negative offsets so .hero's overflow:hidden
+   never clips them. */
+.hero-right {
+  position: relative;
+  min-height: 460px;
+  padding: 40px 30px;
+}
+.deco-cards {
+  position: absolute; inset: 0;
+  pointer-events: none; z-index: 1;
+}
+.deco-card {
+  position: absolute; width: 140px; border-radius: 14px;
+  box-shadow: 0 10px 28px rgba(12,56,70,.16);
+  opacity: .96;
+}
+.deco-card-1 { top: 6px;    left: 0;   transform: rotate(-9deg); }
+.deco-card-2 { top: 6px;    right: 0;  transform: rotate(8deg); }
+.deco-card-3 { bottom: 6px; left: 50%; transform: translateX(-50%) rotate(3deg); }
+#hero-stats-panel { position: relative; }
+.hero-stat-card { position: relative; z-index: 2; }
+
+@media (max-width: 900px) {
+  .hero-right { min-height: 0; padding: 0; }
+  .deco-cards {
+    position: static; display: flex; gap: 12px; justify-content: center;
+    margin-bottom: 16px; pointer-events: auto;
+  }
+  .deco-card { position: static !important; transform: none !important; width: 88px; opacity: .85; }
+}
+
+/* ================================================================
+   v3.3 ADDITIONS — personal notes panel (Supabase-backed, in the
+   focus-overlay card detail view)
+   ================================================================ */
+.note-panel {
+  flex-shrink: 0; border-top: 1px solid var(--border);
+  background: var(--surface); padding: 12px 14px 14px;
+}
+.note-panel-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.note-panel-title { font-size: 12px; font-weight: 700; color: var(--ink-dim); }
+.note-save-status { font-size: 11px; color: var(--ink-muted); }
+.note-textarea {
+  width: 100%; min-height: 64px; resize: vertical;
+  border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 8px 10px;
+  font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--ink);
+}
+.note-textarea:focus { outline: none; border-color: var(--teal-lt); }
+.note-hint { font-size: 10.5px; color: var(--ink-muted); margin-top: 6px; }
+
+/* ================================================================
+   v3.4 ADDITIONS — static content pages (About/Contact/How To Use/
+   Pricing/Terms/Privacy/404), themed to match the real site tokens
+   ================================================================ */
+
+.ptw-footer-inner { flex-wrap: wrap; row-gap: 8px; }
+.ptw-footer-links { font-size: 11px; color: var(--ink-muted); margin-left: auto; }
+.ptw-footer-links a { color: var(--ink-dim); text-decoration: none; font-weight: 600; }
+.ptw-footer-links a:hover { color: var(--teal); text-decoration: underline; }
+.ptw-footer-dot { margin: 0 6px; }
+.ptw-footer-credits {
+  flex-basis: 100%; font-size: 10.5px; line-height: 1.7; color: var(--ink-muted);
+  padding-top: 8px; margin-top: 4px; border-top: 1px dashed var(--border);
+}
+.ptw-footer-credits a { color: var(--teal); }
+
+.ptw-page-content { max-width: 760px; margin: 0 auto; padding: 56px 28px 80px; }
+.ptw-page-content h1 {
+  font-family: 'Playfair Display', serif; color: var(--teal-dark);
+  font-size: 34px; margin-bottom: 10px;
+}
+.ptw-page-content .page-lede { color: var(--ink-dim); font-size: 15px; margin-bottom: 32px; line-height: 1.7; }
+.ptw-page-content h2 {
+  font-family: 'Playfair Display', serif; color: var(--teal-dark);
+  font-size: 21px; margin: 32px 0 12px;
+}
+.ptw-page-content p, .ptw-page-content li { color: var(--ink-dim); font-size: 14.5px; line-height: 1.75; }
+.ptw-page-content ol, .ptw-page-content ul { padding-left: 20px; margin-bottom: 20px; }
+.ptw-page-content li { margin-bottom: 8px; }
+.ptw-content-card {
+  background: var(--teal-50); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px 22px; margin: 28px 0;
+}
+.ptw-content-card p { color: var(--ink); }
+.ptw-step-list { counter-reset: step; list-style: none; padding-left: 0; }
+.ptw-step-list li { counter-increment: step; position: relative; padding-left: 40px; margin-bottom: 16px; }
+.ptw-step-list li::before {
+  content: counter(step); position: absolute; left: 0; top: 0;
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--teal-dark); color: #fff; font-weight: 700; font-size: 12px;
+  display: flex; align-items: center; justify-content: center;
+}
+.ptw-section-divider {
+  border: none; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border) 20%, var(--border) 80%, transparent);
+  margin: 32px 0;
+}
+
+.ptw-contact-form { display: flex; flex-direction: column; gap: 14px; margin-top: 8px; }
+.ptw-contact-form label { font-size: 12.5px; font-weight: 700; color: var(--ink-dim); display: flex; flex-direction: column; gap: 6px; }
+.ptw-contact-form input, .ptw-contact-form textarea {
+  border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px;
+  font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--ink); resize: vertical;
+}
+.ptw-contact-form input:focus, .ptw-contact-form textarea:focus { outline: none; border-color: var(--teal-lt); }
+
+.pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 24px 0 8px; }
+.pricing-card {
+  border: 1.5px solid var(--border); border-radius: var(--radius);
+  padding: 22px 18px; text-align: center;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.pricing-card h2 { font-size: 16px; margin: 0; }
+.pricing-desc { font-size: 12.5px; color: var(--ink-muted); flex: 1; }
+.pricing-buy { display: inline-block; text-decoration: none; margin-top: 6px; font-size: 13px; padding: 11px 16px; }
+@media (max-width: 700px) { .pricing-grid { grid-template-columns: 1fr; } }
+
+.ptw-404 { max-width: 480px; margin: 0 auto; padding: 72px 28px 96px; text-align: center; }
+.ptw-404-eyebrow {
+  font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 700;
+  letter-spacing: .08em; color: var(--gold); margin-bottom: 6px;
+}
+.ptw-404 h1 { font-family: 'Playfair Display', serif; font-size: 27px; color: var(--teal-dark); margin-bottom: 10px; }
+.ptw-404-body { font-size: 14px; color: var(--ink-dim); line-height: 1.7; margin-bottom: 28px; }
+.ptw-404-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px; }
+.ptw-404-actions a { text-decoration: none; }
+.ptw-404-links { font-size: 12.5px; }
+.ptw-404-links a { color: var(--ink-muted); text-decoration: none; font-weight: 600; }
+.ptw-404-links a:hover { color: var(--teal); text-decoration: underline; }
+
+@media (max-width: 760px) {
+  .home-nav { flex-wrap: wrap; height: auto; padding: 10px 16px; gap: 6px; }
+  .nav-info-link { padding: 6px 10px; font-size: 12px; }
+}
+
+/* ================================================================
+   v3.5 ADDITIONS — My Account overlay (Profile/Categories/History),
+   public reviews section
+   ================================================================ */
+
+/* My Account overlay — same pattern as auth/notes overlays */
+#account-overlay {
+  display: none; position: fixed; inset: 0; z-index: 560;
+  background: rgba(12,56,70,.55); backdrop-filter: blur(3px);
+  align-items: center; justify-content: center;
+}
+#account-overlay.open { display: flex; }
+.account-tab.active-tab { text-decoration: underline; font-weight: 700; color: var(--teal-dark); }
+
+/* Create/Edit Custom Card overlay — same fixed/centered pattern as
+   #account-overlay/#notes-overlay, opened on top of them (higher z-index)
+   since "Create a card" is reachable from inside the My Created Cards list. */
+#create-card-overlay {
+  display: none; position: fixed; inset: 0; z-index: 570;
+  background: rgba(12,56,70,.55); backdrop-filter: blur(3px);
+  align-items: center; justify-content: center; padding: 20px;
+  overflow-y: auto;
+}
+#create-card-overlay.open { display: flex; }
+.create-card-image-preview {
+  width: 100%; max-width: 260px; margin: 0 auto 14px;
+}
+.create-card-image-preview img {
+  width: 100%; border-radius: var(--radius-sm); display: block;
+}
+.create-card-field {
+  margin-bottom: 10px; text-align: left;
+}
+.create-card-field label {
+  display: block; font-size: 12px; font-weight: 600; color: var(--ink-muted); margin-bottom: 3px;
+}
+.create-card-field input {
+  width: 100%; padding: 9px 11px; font-size: 15px; color: var(--ink);
+  border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: var(--bg);
+}
+.create-card-field input:focus { outline: none; border-color: var(--teal-lt); }
+.create-card-status {
+  min-height: 18px; font-size: 13px; color: var(--ink-muted); text-align: center; margin-top: 6px;
+}
+
+/* Custom card detail view (custom-cards.js's renderCustomCardDetail) --
+   one row per language actually filled in, reusing .audio-btn as-is. */
+.custom-card-langs { margin: 14px 0; }
+.custom-card-lang-row {
+  display: flex; align-items: center; gap: 10px; padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+.custom-card-lang-label {
+  font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--ink-muted);
+  width: 60px; flex-shrink: 0;
+}
+.custom-card-lang-text { flex: 1; font-size: 16px; color: var(--ink); }
+
+/* Add to Category overlay — same fixed/centered pattern as the others,
+   but opened from a button that lives INSIDE #focus-overlay (the card
+   detail view, z-index 500) rather than from the page itself. At the
+   same z-index as the other simple overlays (200) this rendered
+   underneath the still-open card view -- it genuinely opened, just
+   entirely hidden behind it, which is exactly what "the button doesn't
+   do anything" looks like. Needs to sit above focus-overlay, not level
+   with it. */
+#add-category-overlay {
+  display: none; position: fixed; inset: 0; z-index: 600;
+  background: rgba(12,56,70,.55); backdrop-filter: blur(3px);
+  align-items: center; justify-content: center;
+}
+#add-category-overlay.open { display: flex; }
+.category-pick-btn {
+  display: block; width: 100%; text-align: left; padding: 10px 12px;
+  margin-bottom: 6px; border: 1px solid var(--border); border-radius: 8px;
+  background: none; cursor: pointer; font-size: 14px;
+}
+.category-pick-btn:hover { background: var(--surface-alt, #f3f3f3); }
+.pair-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px;
+}
+.pair-row:last-child { border-bottom: none; }
+.yes-badge {
+  font-size: 11px; font-weight: 700; color: #1a7a4c;
+  background: #e4f4ea; padding: 2px 10px; border-radius: 20px;
+}
+#account-tab-body .settings-label { margin-top: 12px; }
+#account-tab-body input { margin-bottom: 4px; }
+
+/* Public reviews section on the homepage */
+.home-reviews {
+  max-width: 720px; margin: 0 auto; padding: 40px 36px 56px; text-align: center;
+}
+.reviews-summary { margin: 14px 0 24px; font-size: 15px; color: var(--ink-dim); }
+.reviews-stars { color: var(--gold); font-size: 18px; margin-right: 8px; letter-spacing: 1px; }
+.reviews-average { font-weight: 700; color: var(--teal-dark); }
+.reviews-count { color: var(--ink-muted); font-size: 13px; }
+.reviews-list { display: flex; flex-direction: column; gap: 14px; text-align: left; margin-bottom: 20px; }
+.review-item {
+  border: 1.5px solid var(--border); border-radius: var(--radius);
+  padding: 16px 18px; background: var(--surface);
+}
+.review-item-head { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.review-item-stars { color: var(--gold); letter-spacing: 1px; }
+.review-item-name { font-weight: 700; font-size: 13px; color: var(--ink); }
+.review-item-text { font-size: 13.5px; color: var(--ink-dim); line-height: 1.6; }
+.review-form-box {
+  max-width: 380px; margin: 16px auto 0; text-align: left;
+  border: 1.5px solid var(--border); border-radius: var(--radius);
+  padding: 16px 18px; background: var(--teal-50);
+}
+.review-form-box select {
+  width: 100%; padding: 8px 10px; border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border); font-size: 13px;
+}
+
+/* ================================================================
+   v3.6 ADDITIONS — bigger/bolder homepage text, page headers for
+   static content pages, collapsible note panel, card zoom feature
+   ================================================================ */
+
+.hero-title { font-size: clamp(40px, 5vw, 64px); }
+.hero-subhead { font-size: 19px; font-weight: 700; }
+.hero-body { font-size: 16.5px; font-weight: 500; line-height: 1.7; }
+.home-cats-title { font-size: 30px; }
+.cat-tile-name { font-size: 15.5px; font-weight: 800; }
+.cat-tile-count { font-size: 12px; font-weight: 600; }
+.hero-eyebrow { font-weight: 800; }
+
+/* ── Centered-logo header for static content pages ──────────────
+   About/Contact/How To Use/Pricing/Terms/Privacy — logo centered,
+   large enough that the wordmark inside it is clearly legible,
+   with study-motif icons either side, matching the brand's teal
+   circular badge. Sits above the existing .home-nav on those pages. */
+.ptw-page-header {
+  display: flex; align-items: center; justify-content: center; gap: 40px;
+  padding: 32px 24px 22px;
+  background: linear-gradient(160deg, var(--teal-50) 0%, #ffffff 75%);
+  border-bottom: 1px solid var(--border);
+}
+.ptw-header-logo {
+  width: 116px; height: 116px; object-fit: contain; border-radius: 22%;
+  box-shadow: 0 10px 30px rgba(12,56,70,.18);
+}
+.ptw-header-icons { display: flex; gap: 20px; color: var(--teal-lt); opacity: .55; }
+.ptw-header-icons svg { width: 24px; height: 24px; }
+@media (max-width: 640px) {
+  .ptw-header-icons { display: none; }
+  .ptw-header-logo { width: 88px; height: 88px; }
+}
+
+/* ── Collapsible note panel (card detail view) ───────────────────
+   Collapsed by default so it never shrinks the flashcard image;
+   expands only when the learner actually wants to write a note. */
+.note-panel-toggle {
+  width: 100%; text-align: left; background: none; border: none;
+  border-top: 1px solid var(--border); cursor: pointer;
+  padding: 10px 14px; font-size: 12px; font-weight: 700; color: var(--ink-dim);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.note-panel-toggle .chevron { transition: transform .2s; }
+.note-panel-toggle.expanded .chevron { transform: rotate(180deg); }
+.note-panel-body { padding: 0 14px 14px; display: none; }
+.note-panel-body.open { display: block; }
+
+/* ── Card zoom (enlarge without shrinking the default view) ──────
+   A small expand button on the image itself toggles a larger modal
+   size, rather than permanently reserving space for a zoom control. */
+.focus-zoom-btn {
+  position: absolute; top: 10px; right: 10px; z-index: 5;
+  width: 30px; height: 30px; border-radius: 50%;
+  background: rgba(255,255,255,.9); border: 1px solid var(--border);
+  color: var(--teal-dark); cursor: pointer; font-size: 14px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,.12);
+}
+.focus-zoom-btn:hover { background: #fff; }
+#focus-card-wrap { position: relative; transition: width .25s, height .25s, max-width .25s, max-height .25s; }
+#focus-card-wrap.zoomed { width: min(90vw, 640px); height: min(90vh, 820px); }
+
+.focus-card-img-wrap { flex: 1; min-height: 0; position: relative; display: flex; }
+.focus-card-img-wrap .focus-card-img { flex: 1; min-height: 0; width: 100%; height: 100%; }
+
+/* ================================================================
+   v4.0 — TYPE SYSTEM
+   ----------------------------------------------------------------
+   Display: Fraunces (variable serif, warm, real weight range)
+   UI/body: Inter (variable, built for small sizes — where the nav lives)
+   Scripts: Noto Sans Devanagari + Noto Sans JP, declared explicitly
+            so Hindi and Japanese stop falling back to whatever the
+            operating system happens to supply. This is the fix for
+            the trilingual inconsistency across the site.
+   ================================================================ */
+
+:root {
+  --font-display: 'Fraunces', 'Playfair Display', Georgia, 'Noto Serif JP', serif;
+  --font-ui: 'Inter', 'Noto Sans JP',
+             system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Type scale — replaces the ad-hoc 34/27/21/14.5/12.5/10.5 sizes */
+  --fs-display: clamp(40px, 5.2vw, 60px);
+  --fs-h1:      clamp(30px, 3.4vw, 40px);
+  --fs-h2:      28px;
+  --fs-h3:      20px;
+  --fs-lede:    17px;
+  --fs-body:    15px;
+  --fs-sm:      13px;
+  --fs-label:   11.5px;
+
+  /* Vertical rhythm — one scale, used everywhere */
+  --space-section: 88px;
+  --space-block:   32px;
+}
+
+body { font-family: var(--font-ui); letter-spacing: -0.006em; }
+
+h1, h2, h3,
+.hero-title, .home-cats-title, .nav-brand-name,
+.ptw-page-content h1, .ptw-page-content h2,
+.info-box h3, .ptw-404 h1, .ptw-404-eyebrow {
+  font-family: var(--font-display);
+  font-variation-settings: 'SOFT' 24, 'WONK' 1;
+  letter-spacing: -0.012em;
+}
+
+.hero-title { font-size: var(--fs-display); line-height: 1.03; font-weight: 600; }
+.home-cats-title { font-size: var(--fs-h2); font-weight: 600; }
+.ptw-page-content h1 { font-size: var(--fs-h1); line-height: 1.14; font-weight: 600; margin-bottom: 12px; }
+.ptw-page-content h2 { font-size: 24px; line-height: 1.22; font-weight: 600; margin: 44px 0 14px; }
+.ptw-page-content h3 { font-size: var(--fs-h3); font-weight: 600; margin: 28px 0 10px; color: var(--teal-dark); }
+.ptw-page-content .page-lede { font-size: var(--fs-lede); line-height: 1.62; margin-bottom: 36px; }
+.ptw-page-content p,
+.ptw-page-content li { font-size: var(--fs-body); line-height: 1.68; }
+/* Headings and .page-lede already carry deliberate margins above; plain
+   paragraphs never got their own, so they fell back to the browser's
+   default ~1em, reading noticeably tighter than everything around them
+   and making pages with a lot of body copy (how-to-use.html especially)
+   feel cluttered next to the generously-spaced headings. */
+.ptw-page-content p { margin-bottom: 18px; }
+.ptw-page-content p:last-child { margin-bottom: 0; }
+.nav-brand-name { font-size: 19px; font-weight: 600; }
+
+/* Nav links — the single biggest "amateur" tell on the old site was
+   these being 500-weight muted grey. Heavier, darker, tighter. */
+.nav-info-link {
+  font-family: var(--font-ui);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.005em;
+}
+.nav-info-link:hover { background: var(--teal-50); color: var(--teal-dark); }
+.nav-info-link.is-current { color: var(--teal); background: var(--teal-50); }
+
+/* Latin numerals in tables should line up in columns. */
+.ptw-table, .price-amount, .price-was { font-variant-numeric: tabular-nums; }
+
+/* Devanagari and Japanese sit slightly small next to Inter at the
+   same px value; nudge them so mixed-script lines share a baseline
+   weight rather than one script looking shrunken. */
+:lang(hi), .script-hi { font-family: 'Noto Sans Devanagari', var(--font-ui); font-size: 1.04em; }
+:lang(ja), .script-ja { font-family: 'Noto Sans JP', var(--font-ui); }
+
+
+/* ================================================================
+   v4.0 — PRICING PAGE
+   ================================================================ */
+
+/* Wider container than the prose pages: tables need the room. */
+.pricing-page { max-width: 1000px; }
+
+.price-hero { text-align: center; padding-bottom: 8px; }
+.price-hero h1 { margin-bottom: 14px; }
+.price-hero .page-lede { max-width: 620px; margin-left: auto; margin-right: auto; }
+
+.price-badge-row {
+  display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+.price-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: var(--fs-label); font-weight: 700; letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--teal-dark); background: var(--teal-50);
+  border: 1px solid var(--border);
+  padding: 6px 13px; border-radius: 20px;
+}
+.price-badge svg { width: 13px; height: 13px; }
+
+/* ── Currency notice ─────────────────────────────────────────────
+   The signature moment of this page: a product about crossing
+   languages should meet you in your own currency without being
+   asked. Quiet, but it says the whole thesis. */
+.currency-note {
+  display: flex; align-items: center; justify-content: center;
+  gap: 10px; flex-wrap: wrap;
+  font-size: var(--fs-sm); color: var(--ink-dim);
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 30px; padding: 9px 18px;
+  width: fit-content; margin: 0 auto var(--space-block);
+}
+.currency-note select {
+  font-family: var(--font-ui); font-size: var(--fs-sm); font-weight: 600;
+  color: var(--teal-dark); background: var(--teal-50);
+  border: 1px solid var(--border); border-radius: 20px;
+  padding: 4px 10px; cursor: pointer;
+}
+.currency-note select:focus-visible { outline: 2px solid var(--teal-lt); outline-offset: 2px; }
+
+/* ── Two tier cards ──────────────────────────────────────────────*/
+.tier-grid {
+  display: grid; grid-template-columns: 1fr 1.15fr; gap: 20px;
+  margin-bottom: var(--space-section);
+  align-items: start;
+}
+.tier {
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 30px 28px;
+  display: flex; flex-direction: column; gap: 14px;
+}
+.tier-featured {
+  border-color: var(--teal); border-width: 2px;
+  box-shadow: var(--shadow);
+  position: relative;
+  padding-top: 36px;
+}
+.tier-flag {
+  position: absolute; top: -12px; left: 28px;
+  font-size: var(--fs-label); font-weight: 700; letter-spacing: .07em;
+  text-transform: uppercase; color: #fff; background: var(--teal-dark);
+  padding: 5px 13px; border-radius: 20px;
+}
+.tier-name {
+  font-family: var(--font-display); font-size: 23px; font-weight: 600;
+  color: var(--teal-dark); font-variation-settings: 'SOFT' 0, 'WONK' 0;
+}
+.tier-tagline { font-size: var(--fs-sm); color: var(--ink-muted); margin-top: -8px; }
+
+.tier-price { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.price-amount {
+  font-family: var(--font-display); font-size: 42px; font-weight: 700;
+  color: var(--teal-dark); line-height: 1;
+  font-variation-settings: 'SOFT' 24, 'WONK' 0;
+}
+.price-was {
+  font-size: 17px; color: var(--ink-muted); text-decoration: line-through;
+  text-decoration-thickness: 1.5px;
+}
+.price-unit { font-size: var(--fs-sm); color: var(--ink-muted); font-weight: 600; }
+.price-sub { font-size: 12.5px; color: var(--ink-muted); }
+
+.tier-list { list-style: none; padding: 0; margin: 6px 0 0; display: grid; gap: 9px; }
+.tier-list li {
+  display: grid; grid-template-columns: 18px 1fr; gap: 9px;
+  align-items: start; font-size: 14px; color: var(--ink-dim); line-height: 1.5;
+}
+.tier-list li::before {
+  content: ''; width: 15px; height: 15px; margin-top: 3px; border-radius: 50%;
+  background: var(--teal-50); border: 1.5px solid var(--teal-lt);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6.2l2.3 2.3 4.7-5' fill='none' stroke='%230C3846' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-size: 11px; background-repeat: no-repeat; background-position: center;
+}
+.tier-list li.is-limited::before {
+  background-image: none; background: #fdf6e3; border-color: var(--gold);
+}
+.tier-cta { margin-top: auto; padding-top: 8px; }
+.tier-cta .btn-primary, .tier-cta .btn-secondary {
+  width: 100%; display: block; text-align: center; text-decoration: none;
+  font-family: var(--font-ui);
+}
+
+/* ── Pair selector inside the featured tier ──────────────────────*/
+.pair-picker { display: grid; gap: 8px; margin-top: 4px; }
+.pair-option {
+  display: grid; grid-template-columns: 20px 1fr auto; gap: 11px; align-items: center;
+  border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+  padding: 11px 13px; cursor: pointer; background: var(--bg);
+  transition: border-color .15s, background .15s;
+}
+.pair-option:hover { border-color: var(--teal-lt); }
+.pair-option.selected { border-color: var(--teal); background: var(--teal-50); }
+.pair-option input { accent-color: var(--teal-dark); width: 16px; height: 16px; cursor: pointer; }
+.pair-option-name { font-size: 13.5px; font-weight: 600; color: var(--ink); }
+.pair-option-scripts { font-size: 12px; color: var(--ink-muted); margin-top: 1px; }
+.pair-option-price { font-size: 13.5px; font-weight: 700; color: var(--teal-dark); }
+.pair-option.is-bundle { border-style: dashed; }
+
+/* ── Comparison table ────────────────────────────────────────────*/
+.ptw-table-wrap { overflow-x: auto; margin: 20px 0 var(--space-section); }
+.ptw-table {
+  width: 100%; border-collapse: collapse; min-width: 560px;
+  background: var(--surface); border-radius: var(--radius); overflow: hidden;
+  border: 1.5px solid var(--border);
+}
+.ptw-table thead th {
+  font-family: var(--font-ui); font-size: var(--fs-label); font-weight: 700;
+  letter-spacing: .07em; text-transform: uppercase; color: var(--ink-dim);
+  padding: 15px 16px; text-align: center; background: var(--teal-50);
+  border-bottom: 1.5px solid var(--border);
+}
+.ptw-table thead th:first-child { text-align: left; }
+.ptw-table th[scope="row"] {
+  font-size: 14px; font-weight: 500; color: var(--ink-dim);
+  padding: 13px 16px; text-align: left; border-bottom: 1px solid var(--border);
+}
+.ptw-table td {
+  font-size: 13.5px; color: var(--ink); text-align: center;
+  padding: 13px 16px; border-bottom: 1px solid var(--border);
+}
+.ptw-table tbody tr:last-child th,
+.ptw-table tbody tr:last-child td { border-bottom: none; }
+.ptw-table tbody tr:hover th[scope="row"],
+.ptw-table tbody tr:hover td { background: rgba(228,244,248,.4); }
+.ptw-table .col-premium { background: rgba(228,244,248,.35); font-weight: 600; }
+.ptw-table caption {
+  caption-side: bottom; font-size: 12.5px; color: var(--ink-muted);
+  padding-top: 12px; padding-left: 2px; text-align: left;
+}
+.tick { color: #1a7a4c; font-weight: 700; }
+.dash { color: var(--ink-muted); }
+.qty { font-weight: 600; }
+.qty-limited { color: #8a6d1f; }
+
+/* Section headings that introduce a table or grid */
+.price-section-head { text-align: center; max-width: 620px; margin: 0 auto 8px; }
+.price-section-head h2 { margin-top: 0; }
+.price-section-head p { color: var(--ink-muted); font-size: 14.5px; }
+
+/* ── Regional price table ────────────────────────────────────────*/
+.region-table td:last-child { font-weight: 700; color: var(--teal-dark); }
+.region-table tbody tr.is-you th[scope="row"],
+.region-table tbody tr.is-you td { background: var(--teal-50); }
+.region-you-flag {
+  font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--teal); margin-left: 8px;
+}
+
+/* ── FAQ accordion ───────────────────────────────────────────────*/
+.faq-list { display: grid; gap: 10px; margin-bottom: var(--space-block); }
+.faq-item {
+  border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--surface); overflow: hidden;
+}
+.faq-item summary {
+  cursor: pointer; list-style: none; padding: 15px 18px;
+  font-size: 14.5px; font-weight: 600; color: var(--ink);
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after {
+  content: ''; flex-shrink: 0; width: 9px; height: 9px;
+  border-right: 2px solid var(--teal); border-bottom: 2px solid var(--teal);
+  transform: rotate(45deg); transition: transform .2s;
+}
+.faq-item[open] summary::after { transform: rotate(-135deg); }
+.faq-item summary:focus-visible { outline: 2px solid var(--teal-lt); outline-offset: -2px; }
+.faq-item[open] summary { background: var(--teal-50); }
+.faq-answer { padding: 4px 18px 17px; }
+.faq-answer p { font-size: 14px; color: var(--ink-dim); line-height: 1.68; }
+.faq-answer p + p { margin-top: 10px; }
+
+/* ── Honesty strip: what does not work yet ───────────────────────*/
+.honesty-box {
+  border: 1.5px dashed var(--gold); background: #fdfaf0;
+  border-radius: var(--radius); padding: 22px 24px; margin: 0 0 var(--space-section);
+}
+.honesty-box h3 {
+  font-family: var(--font-display); font-size: 18px; font-weight: 600;
+  color: #6b5518; margin-bottom: 8px;
+}
+.honesty-box p, .honesty-box li { font-size: 14px; color: #5c5230; line-height: 1.65; }
+.honesty-box ul { padding-left: 20px; margin-top: 8px; }
+.honesty-box li { margin-bottom: 5px; }
+
+/* ── Closing note ────────────────────────────────────────────────*/
+.price-closing {
+  text-align: center; max-width: 560px; margin: 0 auto;
+  padding-top: var(--space-block); border-top: 1px solid var(--border);
+}
+.price-closing p { font-size: 14px; color: var(--ink-muted); line-height: 1.7; }
+
+@media (max-width: 860px) {
+  .tier-grid { grid-template-columns: 1fr; }
+  :root { --space-section: 60px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}
+
+/* ================================================================
+   v4.1 — STRUCTURE
+   Nav restructure + avatar menu, hero CTA, stat bar, category
+   tiles, loading skeletons, four-column footer, status table.
+   ================================================================ */
+
+/* ── NAV ─────────────────────────────────────────────────────────
+   Was nine items in one row. Now: brand, four content links, then
+   a right-hand cluster of search + auth. Everything account-related
+   collapses into one avatar menu once you're logged in. */
+
+.home-nav {
+  gap: 4px;
+  height: 62px;
+  padding: 0 24px;
+  border-bottom: 1px solid var(--border);
+}
+.nav-links { display: flex; align-items: center; gap: 2px; margin-left: 18px; }
+.nav-right { display: flex; align-items: center; gap: 8px; }
+
+.nav-info-link { margin-left: 0; padding: 8px 12px; }
+
+/* Search trigger, with a keyboard hint the way every mature app does it */
+.nav-search-btn {
+  gap: 8px; padding: 7px 12px 7px 13px; border-radius: 10px;
+  font-family: var(--font-ui); font-weight: 500; color: var(--ink-muted);
+  background: var(--surface);
+}
+.nav-search-btn:hover { border-color: var(--teal-lt); color: var(--ink-dim); }
+
+/* Auth cluster — a quiet text link beside one filled button. */
+.nav-login {
+  background: none; border: none; cursor: pointer;
+  font-family: var(--font-ui); font-size: 13.5px; font-weight: 600;
+  color: var(--ink); padding: 8px 10px; border-radius: var(--radius-sm);
+  text-decoration: none;
+}
+.nav-login:hover { color: var(--teal); }
+.nav-cta {
+  display: inline-block; border: none; cursor: pointer; text-decoration: none;
+  font-family: var(--font-ui); font-size: 13.5px; font-weight: 600;
+  color: #fff; background: var(--teal-dark);
+  padding: 9px 16px; border-radius: 10px;
+  transition: background .15s, transform .12s;
+}
+.nav-cta:hover { background: var(--teal); transform: translateY(-1px); }
+.nav-cta:focus-visible, .nav-login:focus-visible, .nav-search-btn:focus-visible,
+.nav-info-link:focus-visible, .avatar-btn:focus-visible {
+  outline: 2px solid var(--teal-lt); outline-offset: 2px;
+}
+
+/* ── Avatar menu ─────────────────────────────────────────────────*/
+.avatar-wrap { position: relative; }
+.avatar-btn {
+  display: flex; align-items: center; gap: 7px;
+  background: none; border: 1.5px solid var(--border); cursor: pointer;
+  border-radius: 30px; padding: 4px 10px 4px 4px;
+  transition: border-color .15s;
+}
+.avatar-btn:hover { border-color: var(--teal-lt); }
+.avatar-circle {
+  width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+  background: var(--teal-dark); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11.5px; font-weight: 700; letter-spacing: .02em;
+  text-transform: uppercase;
+}
+.avatar-chevron {
+  width: 7px; height: 7px; flex-shrink: 0;
+  border-right: 2px solid var(--ink-muted); border-bottom: 2px solid var(--ink-muted);
+  transform: rotate(45deg) translate(-2px, -2px);
+  transition: transform .2s;
+}
+.avatar-btn[aria-expanded="true"] .avatar-chevron { transform: rotate(-135deg) translate(-2px, -2px); }
+
+.avatar-menu {
+  position: absolute; top: calc(100% + 8px); right: 0; z-index: 150;
+  min-width: 216px; padding: 6px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; box-shadow: var(--shadow-lg);
+  display: none;
+}
+.avatar-menu.open { display: block; }
+.avatar-menu-head {
+  padding: 9px 11px 10px; border-bottom: 1px solid var(--border); margin-bottom: 5px;
+}
+.avatar-menu-email {
+  font-size: 12.5px; font-weight: 600; color: var(--ink);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.avatar-menu-sub { font-size: 11px; color: var(--ink-muted); margin-top: 2px; }
+.avatar-menu button, .avatar-menu a {
+  display: flex; align-items: center; gap: 10px; width: 100%;
+  background: none; border: none; cursor: pointer; text-align: left;
+  text-decoration: none;
+  font-family: var(--font-ui); font-size: 13.5px; font-weight: 500; color: var(--ink);
+  padding: 9px 11px; border-radius: 8px;
+}
+.avatar-menu button:hover, .avatar-menu a:hover { background: var(--teal-50); color: var(--teal-dark); }
+.avatar-menu svg { width: 15px; height: 15px; flex-shrink: 0; color: var(--ink-muted); }
+.avatar-menu button:hover svg, .avatar-menu a:hover svg { color: var(--teal); }
+.avatar-menu-sep { height: 1px; background: var(--border); margin: 5px 0; }
+.avatar-menu .is-signout { color: #a33; }
+.avatar-menu .is-signout svg { color: #a33; }
+.avatar-menu .is-signout:hover { background: #fdf0ef; color: #8a2e20; }
+
+@media (max-width: 860px) {
+  .nav-links { display: none; }
+  .home-nav { height: 58px; padding: 0 14px; }
+}
+
+/* ── HERO ────────────────────────────────────────────────────────
+   The old hero opened with two dropdowns and no call to action.
+   Those preferences now live in the app topbar, where they're
+   actually used; the hero opens with a way in. */
+
+.hero-cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
+.hero-cta-row .btn-primary, .hero-cta-row .btn-secondary {
+  font-family: var(--font-ui); text-decoration: none; display: inline-block;
+}
+.hero-mvp-line {
+  font-size: 13px; color: var(--ink-muted); margin-top: 16px; line-height: 1.6;
+}
+.hero-mvp-line a { color: var(--teal); font-weight: 600; }
+
+/* The decorative cards no longer compete with a large stat box. */
+.hero-right { min-height: 420px; }
+
+/* ── STAT BAR ────────────────────────────────────────────────────
+   Content scale, not user counts. Every number here is verifiable
+   today, which is the point — it earns trust instead of claiming it. */
+.stat-bar {
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  background: rgba(255,255,255,.55);
+}
+.stat-bar-inner {
+  max-width: 1080px; margin: 0 auto; padding: 26px 24px;
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 18px;
+}
+.stat-cell { text-align: center; }
+.stat-cell-num {
+  font-family: var(--font-display); font-size: 27px; font-weight: 700;
+  color: var(--teal-dark); line-height: 1.1; display: block;
+  font-variation-settings: 'SOFT' 24, 'WONK' 0;
+  font-variant-numeric: tabular-nums;
+}
+.stat-cell-label {
+  font-size: 11.5px; font-weight: 600; color: var(--ink-muted);
+  letter-spacing: .04em; margin-top: 5px; display: block; line-height: 1.35;
+}
+@media (max-width: 860px) {
+  .stat-bar-inner { grid-template-columns: repeat(3, 1fr); gap: 22px 12px; }
+}
+/* ── CATEGORY TILES ──────────────────────────────────────────────*/
+.home-cats { padding-top: var(--space-section); padding-bottom: var(--space-section); }
+.home-cats-title { margin-bottom: 6px; }
+.home-cats-sub {
+  text-align: center; font-size: 14.5px; color: var(--ink-muted);
+  margin: 0 auto 30px; max-width: 460px;
+}
+.cat-tile {
+  position: relative; overflow: hidden;
+  background: var(--surface);
+  border: 1.5px solid var(--border); border-radius: var(--radius);
+  padding: 20px 16px 18px; cursor: pointer; text-align: center;
+  transition: border-color .18s, transform .18s, box-shadow .18s;
+}
+.cat-tile:hover, .cat-tile:focus-visible {
+  border-color: var(--tile-color, var(--teal-lt));
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+  outline: none;
+}
+.cat-tile::after {
+  content: ''; position: absolute; inset: 0 0 auto 0; height: 3px;
+  background: var(--tile-color, var(--teal-lt));
+  opacity: 0; transition: opacity .18s;
+}
+.cat-tile:hover::after, .cat-tile:focus-visible::after { opacity: 1; }
+.cat-tile-icon {
+  width: 34px; height: 34px; margin: 0 auto 11px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 10px; background: var(--teal-50);
+  color: var(--tile-color, var(--teal));
+}
+.cat-tile-icon svg { width: 19px; height: 19px; }
+.cat-tile-name { line-height: 1.32; }
+.cat-tile-count { margin-top: 5px; color: var(--ink-muted); }
+
+/* ── LOADING SKELETONS ───────────────────────────────────────────
+   A blank flash reads as broken; a skeleton reads as loading. */
+@keyframes ptw-shimmer { 0% { background-position: -420px 0; } 100% { background-position: 420px 0; } }
+.skeleton {
+  background: linear-gradient(90deg, #e8f2f5 25%, #f4fafb 50%, #e8f2f5 75%);
+  background-size: 420px 100%;
+  animation: ptw-shimmer 1.25s linear infinite;
+  border-radius: var(--radius-sm);
+}
+.skel-tile { height: 118px; border-radius: var(--radius); border: 1.5px solid var(--border); }
+@media (prefers-reduced-motion: reduce) { .skeleton { animation: none; } }
+
+/* ── STUDY PREFERENCES, relocated into the app topbar ────────────*/
+.topbar-prefs { display: flex; align-items: center; gap: 8px; margin-left: 14px; }
+.topbar-prefs select {
+  font-family: var(--font-ui); font-size: 12px; font-weight: 600;
+  color: var(--ink-dim); background: var(--surface);
+  border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+  padding: 5px 8px; cursor: pointer;
+}
+.topbar-prefs select:focus-visible { outline: 2px solid var(--teal-lt); outline-offset: 1px; }
+.topbar-prefs-label { font-size: 11px; font-weight: 600; color: var(--ink-muted); }
+@media (max-width: 760px) { .topbar-prefs-label { display: none; } }
+
+/* ── FOUR-COLUMN FOOTER ──────────────────────────────────────────*/
+.ptw-footer { background: #EAF4F5; margin-top: auto; }
+.ptw-footer-grid {
+  max-width: 1080px; margin: 0 auto; padding: 46px 24px 30px;
+  display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 32px;
+}
+.ptw-footer-brand { display: flex; flex-direction: column; gap: 11px; }
+.ptw-footer-brand img { width: 42px; height: 42px; border-radius: 22%; }
+.ptw-footer-tagline { font-size: 13px; color: #4A5B60; line-height: 1.65; max-width: 260px; }
+.ptw-footer-col h4 {
+  font-family: var(--font-ui); font-size: 11.5px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; color: #40565c; margin-bottom: 12px;
+}
+.ptw-footer-col ul { list-style: none; padding: 0; display: grid; gap: 8px; }
+.ptw-footer-col a { font-size: 13px; color: #4A5B60; text-decoration: none; }
+.ptw-footer-col a:hover { color: var(--teal); text-decoration: underline; }
+.ptw-footer-base {
+  max-width: 1080px; margin: 0 auto; padding: 18px 24px 30px;
+  border-top: 1px solid #d6e6e8;
+  display: flex; flex-wrap: wrap; gap: 10px 24px; align-items: baseline;
+}
+.ptw-footer-base p { font-size: 11.5px; color: #5c6f74; line-height: 1.7; }
+.ptw-footer-base a { color: var(--teal); }
+@media (max-width: 800px) {
+  .ptw-footer-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
+}
+
+/* ── STATUS TABLE (What's included page) ─────────────────────────*/
+.status-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+  margin: 26px 0 var(--space-block);
+}
+.status-col {
+  border: 1.5px solid var(--border); border-radius: var(--radius);
+  background: var(--surface); padding: 20px 18px;
+}
+.status-col-head {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+  padding-bottom: 11px; margin-bottom: 12px; border-bottom: 1px solid var(--border);
+}
+.status-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.status-live   .status-dot { background: #1a7a4c; }
+.status-progress .status-dot { background: var(--gold); }
+.status-planned  .status-dot { background: var(--ink-muted); }
+.status-live   .status-col-head { color: #1a7a4c; }
+.status-progress .status-col-head { color: #8a6d1f; }
+.status-planned  .status-col-head { color: var(--ink-muted); }
+.status-col ul { list-style: none; padding: 0; display: grid; gap: 9px; }
+.status-col li { font-size: 13.5px; color: var(--ink-dim); line-height: 1.5; }
+.status-planned li { color: var(--ink-muted); }
+@media (max-width: 780px) { .status-grid { grid-template-columns: 1fr; } }
+
+/* ================================================================
+   v4.2 — the missing utility class reviews.js has always relied on.
+   Without it, #review-form-box rendered as a permanently visible
+   empty bordered box beneath "Leave a review" on the homepage.
+   ================================================================ */
+.hidden { display: none !important; }
+
+/* ================================================================
+   v4.3 — usage bar, What's new strip, card actions, toast, and the
+   mobile fixes the app view needed.
+   ================================================================ */
+
+/* ── Usage figures (hidden until they clear their thresholds) ─────*/
+.usage-bar { border-bottom: 1px solid var(--border); background: var(--teal-50); }
+.usage-bar-inner {
+  max-width: 720px; margin: 0 auto; padding: 20px 24px;
+  display: flex; justify-content: center; gap: 48px; flex-wrap: wrap;
+}
+.usage-cell { text-align: center; }
+.usage-num {
+  display: block; font-family: var(--font-display); font-size: 24px; font-weight: 700;
+  color: var(--teal-dark); font-variant-numeric: tabular-nums;
+}
+.usage-label {
+  display: block; font-size: 11.5px; font-weight: 600;
+  color: var(--ink-muted); letter-spacing: .04em; margin-top: 3px;
+}
+
+/* ── What's new ──────────────────────────────────────────────────*/
+.whatsnew { padding: 0 24px var(--space-section); }
+.whatsnew-inner {
+  max-width: 680px; margin: 0 auto;
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 26px 28px;
+}
+.whatsnew-title {
+  font-family: var(--font-display); font-size: 20px; font-weight: 600;
+  color: var(--teal-dark); margin-bottom: 16px;
+  font-variation-settings: 'SOFT' 24, 'WONK' 1;
+}
+.whatsnew-list { list-style: none; padding: 0; display: grid; gap: 13px; }
+.whatsnew-list li {
+  display: grid; grid-template-columns: 92px 1fr; gap: 14px; align-items: baseline;
+  padding-bottom: 13px; border-bottom: 1px dashed var(--border);
+}
+.whatsnew-list li:last-child { border-bottom: none; padding-bottom: 0; }
+.whatsnew-date {
+  font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+  color: var(--ink-muted);
+}
+.whatsnew-text { font-size: 14px; color: var(--ink-dim); line-height: 1.6; }
+.whatsnew-text a { color: var(--teal); font-weight: 600; }
+@media (max-width: 560px) {
+  .whatsnew-list li { grid-template-columns: 1fr; gap: 4px; }
+}
+
+/* ── Card action row ─────────────────────────────────────────────
+   Quiet by default; "Report an issue" quieter still, so it's there
+   when something is wrong without competing with the study actions. */
+.card-actions {
+  margin-top: 8px; padding: 0 14px;
+  display: flex; gap: 14px; flex-wrap: wrap; align-items: center;
+}
+.card-action {
+  cursor: pointer; font-size: 12.5px; font-weight: 500;
+  color: var(--teal-dark); text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.card-action:hover { color: var(--teal); }
+.card-action-quiet { margin-left: auto; color: var(--ink-muted); font-size: 11.5px; }
+.card-action-quiet:hover { color: #a33; }
+
+/* ── Toast ───────────────────────────────────────────────────────*/
+.ptw-toast {
+  position: fixed; left: 50%; bottom: 28px; transform: translate(-50%, 12px);
+  z-index: 400; pointer-events: none;
+  background: var(--teal-dark); color: #fff;
+  font-size: 13px; font-weight: 600;
+  padding: 10px 18px; border-radius: 22px; box-shadow: var(--shadow-lg);
+  opacity: 0; transition: opacity .18s, transform .18s;
+}
+.ptw-toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+/* ── Mobile: the app view ────────────────────────────────────────
+   The card grid used fixed 300x580 tiles, which overflowed on a phone.
+   Below 640px the deck becomes a fluid two-column grid and the cards
+   size to their content instead of a desktop constant. */
+@media (max-width: 640px) {
+  .deck {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 12px; padding: 12px;
+  }
+  .deck .card-wrap { width: 100%; height: auto; }
+  .deck .front-img-wrap { aspect-ratio: 1 / 1; height: auto; }
+  .deck .front-img-wrap img { width: 100%; height: 100%; object-fit: contain; }
+
+  .app-topbar { flex-wrap: wrap; height: auto; padding: 8px 12px; row-gap: 8px; }
+  .topbar-prefs { margin-left: 0; width: 100%; }
+  .topbar-prefs select { flex: 1; min-width: 0; }
+  .topbar-actions { margin-left: auto; }
+
+  #focus-card-wrap { width: 94vw; max-width: 94vw; }
+  #focus-card-wrap.zoomed { width: 96vw; height: 88vh; }
+  .card-actions { gap: 10px; }
+  .card-action-quiet { margin-left: 0; }
+
+  .hero-cta-row .btn-primary, .hero-cta-row .btn-secondary { flex: 1; text-align: center; }
+}
+
+@media (max-width: 400px) {
+  .deck { grid-template-columns: 1fr; }
+}
+
+/* Touch targets: anything tappable gets a comfortable minimum. */
+@media (pointer: coarse) {
+  .nav-info-link, .card-action, .avatar-menu button, .avatar-menu a { min-height: 40px; }
+  .card-action { display: inline-flex; align-items: center; }
+}
+
+
+/* ── Related words and inflected forms on the card ───────────────*/
+.card-extra {
+  margin: 10px 14px 0; padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+.card-extra-head {
+  font-size: 11px; font-weight: 700; letter-spacing: .07em;
+  text-transform: uppercase; color: var(--ink-muted); margin-bottom: 8px;
+  cursor: default;
+}
+.card-extra-fold summary { cursor: pointer; list-style: none; }
+.card-extra-fold summary::-webkit-details-marker { display: none; }
+.card-extra-fold summary::after {
+  content: ''; display: inline-block; width: 6px; height: 6px; margin-left: 7px;
+  border-right: 2px solid var(--ink-muted); border-bottom: 2px solid var(--ink-muted);
+  transform: rotate(45deg) translateY(-2px); transition: transform .2s;
+}
+.card-extra-fold[open] summary::after { transform: rotate(-135deg) translateY(-1px); }
+
+.rel-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.rel-chip {
+  display: inline-flex; flex-direction: column; align-items: center;
+  padding: 5px 10px; border-radius: 8px; cursor: pointer;
+  background: var(--teal-50); border: 1px solid var(--border);
+  transition: border-color .15s, transform .12s;
+}
+.rel-chip:hover { border-color: var(--teal-lt); transform: translateY(-1px); }
+.rel-chip-ja { font-size: 14px; font-weight: 600; color: var(--teal-dark); line-height: 1.2; }
+.rel-chip-en { font-size: 10.5px; color: var(--ink-muted); margin-top: 1px; }
+
+.infl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px 12px; margin-top: 4px; }
+.infl-row { display: flex; justify-content: space-between; gap: 8px; font-size: 12.5px; }
+.infl-label { color: var(--ink-muted); }
+.infl-form { font-weight: 600; color: var(--ink); }
+.infl-class {
+  font-size: 10px; font-weight: 600; color: var(--teal);
+  background: var(--teal-50); border-radius: 4px; padding: 1px 6px; margin-left: 6px;
+}
+@media (max-width: 520px) { .infl-grid { grid-template-columns: 1fr; } }
+
+/* Related words with no flashcard yet: same shape as a tappable chip, but
+   visibly not a link, so nobody clicks expecting a card. */
+.rel-chip-nocard { cursor: default; opacity: 0.85; border-style: dashed; }
+.rel-chip-nocard:hover { transform: none; }
+.rel-chip-audio {
+  background: none; border: 0; cursor: pointer; padding: 0 0 0 4px;
+  font-size: 12px; line-height: 1; opacity: 0.7;
+}
+.rel-chip-audio:hover { opacity: 1; }
+
+/* v5 related-word/phrase chips: adds an inline audio button next to the
+   word (rather than only below it). */
+.rel-chip-v5 { flex-direction: column; align-items: flex-start; max-width: 220px; }
+.rel-chip-v5 .rel-chip-main { display: flex; align-items: baseline; gap: 6px; }
+.rel-chip-v5 .rel-chip-audio { padding-left: 6px; opacity: 0.6; }
+
+
+/* ── Banner header for the static content pages ──────────────────
+   Replaces the logo-plus-icons arrangement. This is a single SVG, so the
+   wordmark stays sharp at any width and is legible without zooming - the
+   old header shrank a nearly-square PNG into a wide strip, which is why
+   it needed zooming to read. */
+.ptw-page-header-wrap {
+  display: block;
+  width: 100%;
+  background: linear-gradient(180deg, #FFFFFF 0%, #EBF9F8 8%, #EBF9F8 92%, #FFFFFF 100%);
+  overflow: hidden;
+}
+.ptw-header-banner {
+  display: block;
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  height: auto;
+  filter: drop-shadow(0 4px 20px rgba(27, 120, 130, 0.10));
+}
+
+/* ── How To Use screenshots ──────────────────────────────────────
+   Floated beside the text they illustrate on wide screens, and stacked
+   full-width on narrow ones so nothing is squeezed on a phone. */
+.htu-shot { max-width: 340px; margin: 4px 0 18px; }
+.htu-shot img {
+  width: 100%; height: auto; display: block;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+}
+.htu-shot figcaption {
+  font-size: 12.5px; color: var(--ink-muted); margin-top: 8px;
+  line-height: 1.5;
+}
+.htu-right { float: right; margin-left: 28px; clear: right; }
+.htu-left  { float: left;  margin-right: 28px; clear: left; }
+@media (max-width: 820px) {
+  .htu-shot { float: none; max-width: 100%; margin: 18px 0 22px; }
+}
+
+/* Inflected forms with kana and romaji: four columns on a wide card,
+   stacked on a narrow one so nothing is truncated on a phone. Verb
+   cards that also carry French and/or Hindi conjugation tables
+   (currently the live-1000 verb set) add one column per language via
+   the infl-grid-fr/infl-grid-hi modifiers, so all available languages'
+   forms line up for cross-lingual comparison. infl-grid-en (Feature 2,
+   the rule-based English gloss -- see enGlossForForm in script.js) adds
+   one further column, present alongside any combination of fr/hi. */
+.infl-grid-rich .infl-row-rich {
+  display: grid; grid-template-columns: 1.1fr 1fr 1fr 1fr;
+  gap: 6px; align-items: baseline; padding: 3px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+.infl-grid-rich.infl-grid-fr .infl-row-rich { grid-template-columns: 1.1fr 1fr 1fr 1fr 1fr; }
+.infl-grid-rich.infl-grid-hi .infl-row-rich { grid-template-columns: 1.1fr 1fr 1fr 1fr 1fr 1fr; }
+.infl-grid-rich.infl-grid-fr.infl-grid-hi .infl-row-rich { grid-template-columns: 1.1fr 1fr 1fr 1fr 1fr 1fr 1fr; }
+.infl-grid-rich.infl-grid-en .infl-row-rich { grid-template-columns: 1.1fr 1fr 1fr 1fr 1fr; }
+.infl-grid-rich.infl-grid-fr.infl-grid-en .infl-row-rich { grid-template-columns: 1.1fr 1fr 1fr 1fr 1fr 1fr; }
+.infl-grid-rich.infl-grid-hi.infl-grid-en .infl-row-rich { grid-template-columns: 1.1fr 1fr 1fr 1fr 1fr 1fr 1fr; }
+.infl-grid-rich.infl-grid-fr.infl-grid-hi.infl-grid-en .infl-row-rich { grid-template-columns: 1.1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr; }
+.infl-kana { font-size: 12.5px; color: var(--ink-muted); }
+.infl-romaji { font-size: 12px; color: var(--ink-muted); font-style: italic; }
+.infl-fr { font-size: 12.5px; color: var(--ink); }
+.infl-hi { font-size: 12.5px; color: var(--ink); }
+.infl-hi-romanized { font-size: 12px; color: var(--ink-muted); font-style: italic; }
+.infl-en-gloss { font-size: 12.5px; color: var(--ink-muted); font-style: italic; }
+.infl-col-head {
+  font-size: 11px; font-weight: 600; color: var(--ink-muted);
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
+.infl-grid-header {
+  display: flex; justify-content: flex-end; gap: 24px; margin-top: 6px;
+}
+@media (max-width: 520px) {
+  .infl-grid-rich .infl-row-rich,
+  .infl-grid-rich.infl-grid-fr .infl-row-rich,
+  .infl-grid-rich.infl-grid-hi .infl-row-rich,
+  .infl-grid-rich.infl-grid-fr.infl-grid-hi .infl-row-rich,
+  .infl-grid-rich.infl-grid-en .infl-row-rich,
+  .infl-grid-rich.infl-grid-fr.infl-grid-en .infl-row-rich,
+  .infl-grid-rich.infl-grid-hi.infl-grid-en .infl-row-rich,
+  .infl-grid-rich.infl-grid-fr.infl-grid-hi.infl-grid-en .infl-row-rich { grid-template-columns: 1fr 1fr; }
+  .infl-grid-header { display: none; }
+}
+
+/* "View usage" button, below each inflected-form row (grid-column: 1/-1
+   makes it break onto its own full-width line under that row's data
+   columns, regardless of how many columns the row itself has). Only
+   rendered at all where real example-sentence data exists for that
+   specific (concept, form) pair -- see usageButtonHtml() in script.js. */
+.infl-usage-btn {
+  grid-column: 1 / -1;
+  justify-self: start;
+  margin-top: 2px;
+  background: none; border: none; padding: 0;
+  font-size: 11.5px; font-weight: 600; color: var(--teal);
+  cursor: pointer; text-decoration: underline;
+}
+.infl-usage-btn:hover { color: var(--teal-dark); }
+
+/* ── Usage overlay ("View usage" sub-page) ─────────────────────*/
+#usage-overlay {
+  display: none; position: fixed; inset: 0; z-index: 650;
+  background: rgba(5,20,35,.82);
+  backdrop-filter: blur(6px);
+  align-items: flex-start; justify-content: center;
+  padding: 60px 20px 20px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+#usage-overlay.open { display: flex; }
+.usage-box {
+  background: var(--surface); border-radius: var(--radius);
+  width: min(560px, calc(100vw - 32px));
+  box-shadow: var(--shadow-lg);
+  padding: 24px;
+  max-height: calc(100svh - 100px);
+  overflow-y: auto;
+}
+.usage-head { margin-bottom: 14px; }
+.usage-head-form {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px; color: var(--teal-dark);
+}
+.usage-head-label { font-size: 13px; color: var(--ink-muted); margin-top: 2px; }
+.usage-ex-list { display: flex; flex-direction: column; gap: 14px; }
+.usage-ex { padding-bottom: 12px; border-bottom: 1px solid rgba(0,0,0,0.07); }
+.usage-ex:last-child { border-bottom: none; padding-bottom: 0; }
+.usage-ex-ja { display: flex; align-items: flex-start; gap: 6px; }
+.usage-ex-ja-text { font-size: 15.5px; color: var(--ink); flex: 1 1 auto; min-width: 0; }
+.usage-ex-has-furigana { line-height: 2.1; }
+.usage-ex-has-furigana rt { font-size: 9px; opacity: .8; user-select: none; }
+.usage-ex-reading { font-size: 13px; color: var(--ink-muted); margin-top: 2px; }
+.usage-ex-romaji { font-size: 12.5px; color: var(--ink-muted); font-style: italic; margin-top: 1px; }
+.usage-ex-en { font-size: 13.5px; color: var(--ink); margin-top: 4px; }
+.usage-empty { font-size: 13px; color: var(--ink-muted); }
+.usage-credit { font-size: 11.5px; color: var(--ink-muted); margin-top: 16px; }
+.usage-credit a { color: var(--teal); }
+
+/* Example sentences on the PWA card, matching the extension's card back. */
+.pwa-ex { margin: 6px 0; }
+.pwa-ex-ja, .pwa-ex-en, .pwa-ex-hi, .pwa-ex-fr { display: flex; align-items: flex-start; gap: 5px; }
+.pwa-ex-text { flex: 1 1 auto; min-width: 0; }
+.pwa-ex-lang-flag { flex: 0 0 auto; font-size: 12px; margin-right: 2px; }
+.pwa-ex-audio-btn {
+  flex: 0 0 auto; margin-top: 1px;
+  width: 18px; height: 18px; padding: 0; border: none; background: none;
+  font-size: 12px; line-height: 1; cursor: pointer; opacity: .55;
+}
+.pwa-ex-audio-btn:hover { opacity: 1; }
+.pwa-ex-ja { font-size: 14.5px; line-height: 1.6; }
+.pwa-ex-en { font-size: 13px; color: var(--ink-muted); line-height: 1.5; }
+.pwa-ex-hi { font-size: 13px; color: var(--teal); line-height: 1.5; font-family: 'Noto Sans Devanagari', sans-serif; }
+.pwa-ex-fr { font-size: 13px; color: #2563eb; line-height: 1.5; }
+.pwa-ex-trilingual, .pwa-ex-multilingual { padding: 8px; background: var(--teal-50); border-radius: 8px; margin: 8px 0; }
+.pwa-ex-has-furigana { line-height: 2.1; }
+.pwa-ex-has-furigana rt { font-size: 9px; opacity: .8; user-select: none; }
+.pwa-ex-credit { font-size: 11px; color: var(--ink-muted); margin-top: 8px; }
+
+/* ---- Katakana button, sense link ------------------------- */
+.ptw-kata-btn { font-size: 0.95em; }
+.ptw-sense-also {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 6px 0 2px;
+}
+.ptw-sense-head { font-size: 12px; opacity: 0.7; }
+.ptw-sense-alt {
+  display: inline-flex; flex-direction: column; line-height: 1.2;
+  padding: 3px 9px; border: 1px solid rgba(0,0,0,0.18); border-radius: 12px;
+  cursor: pointer;
+}
+.ptw-sense-alt:hover { background: rgba(0,0,0,0.05); }
+.ptw-sense-cat { font-size: 10px; opacity: 0.65; }
+
+
+/* ================================================================
+   v4.6 - detail view scrolls, and the illustration keeps a real size
+   ----------------------------------------------------------------
+   #focus-card-inner used to be shared by the 3D flip card (absolutely
+   positioned .card-face children) and the concept detail view (a flex
+   column: tabs, image, audio row, related words, inflected forms,
+   examples, note panel). The shared rule set overflow: hidden while
+   #focus-card-wrap fixed the height at min(580px, 100svh - 80px), so
+   everything below the audio row was rendered and then clipped with
+   no way to scroll to it.
+
+   This used to be gated behind :has(> .dir-tabs) so the 3D flip card
+   (which has no direction tabs) was left alone. renderConceptDetail()
+   is now the only thing that ever fills #focus-card-inner -- the flip
+   card's .card-face/.card-back markup is no longer generated by any
+   JS -- so the rule applies unconditionally instead. This also fixes
+   the rule not applying at all in browsers/WebViews without :has()
+   support, which was silently reproducing the exact clipped-content
+   bug on some mobile browsers even after v4.6 shipped.
+   ================================================================ */
+#focus-card-inner {
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  overscroll-behavior: contain;
+}
+
+/* The direction tabs stay reachable while the rest scrolls.
+   Allow horizontal scroll for tabs even though parent has overflow-x: hidden. */
+#focus-card-inner > .dir-tabs {
+  position: sticky; top: 0; z-index: 6;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  flex-wrap: nowrap;
+}
+#focus-card-inner > .dir-tabs::-webkit-scrollbar {
+  height: 6px;
+}
+#focus-card-inner > .dir-tabs::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+#focus-card-inner > .dir-tabs::-webkit-scrollbar-thumb {
+  background: var(--teal);
+  border-radius: 3px;
+}
+
+/* .focus-card-img-wrap was flex: 1 against a growing list of siblings,
+   so each section added took height from the picture. In a column that
+   scrolls it should claim a fixed share instead of competing. */
+#focus-card-inner .focus-card-img-wrap {
+  flex: 0 0 auto;
+  height: min(320px, 42svh);
+}
+#focus-card-inner .focus-card-img {
+  flex: 0 0 auto;
+  width: 100%; height: 100%;
+  object-fit: contain;
+}
+
+/* Enlarging the modal should enlarge the picture - that was the point
+   of the button. Before this, zooming grew the box and the extra room
+   went to the text sections. */
+#focus-card-wrap.zoomed #focus-card-inner .focus-card-img-wrap {
+  height: min(540px, 62svh);
+}
+
+/* Mute/unmute. Sits alongside the audio buttons it controls, on the
+   flashcard, the Review card and the example-sentence block. */
+.ptw-mute-btn { cursor: pointer; }
+.pwa-ex-block .ptw-mute-btn {
+  border: none; background: none; padding: 0 0 0 6px;
+  font-size: 12px; opacity: .6; vertical-align: middle;
+}
+.pwa-ex-block .ptw-mute-btn:hover { opacity: 1; }
+
+/* Account dropdown on narrow screens.
+   The menu is anchored right:0 under the avatar button and carries a
+   216px min-width. On a phone that min-width can exceed the space to the
+   left of the button, so the menu extends past the left edge of the
+   viewport and the first characters of "My Categories" / "Favorites" get
+   sliced off. min-width has to be released (per spec min-width beats
+   max-width, so capping alone would not have helped) and the menu bounded
+   to the viewport instead. */
+@media (max-width: 640px) {
+  .avatar-menu {
+    min-width: 0;
+    width: max-content;
+    max-width: calc(100vw - 24px);
+    max-height: 72vh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .avatar-menu button, .avatar-menu a { white-space: nowrap; }
+  .avatar-menu-email { max-width: calc(100vw - 60px); }
+}
+
+/* ================================================================
+   OFFLINE STATUS INDICATORS AND DOWNLOAD UI
+   ================================================================ */
+
+/* Offline indicator - shown in nav when navigator.onLine is false */
+.offline-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  background: #fff3cd;
+  border: 1.5px solid #ffc107;
+  font-size: 12px;
+  font-weight: 600;
+  color: #856404;
+  animation: offline-pulse 2s ease-in-out infinite;
+}
+.offline-indicator-icon {
+  font-size: 14px;
+}
+@keyframes offline-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* Sync indicator - shown when coming back online and syncing */
+.sync-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  background: #d4edda;
+  border: 1.5px solid #28a745;
+  font-size: 12px;
+  font-weight: 600;
+  color: #155724;
+}
+.sync-indicator-icon {
+  font-size: 14px;
+  animation: sync-spin 1s linear infinite;
+}
+@keyframes sync-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Category tile download badge */
+.cat-tile-download-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: #fff;
+  z-index: 2;
+}
+.cat-tile-download-badge.downloaded {
+  background: #1a7a4c;
+}
+.cat-tile-download-badge.downloading {
+  background: #a87c1a;
+  animation: download-pulse 1.5s ease-in-out infinite;
+}
+.cat-tile-download-badge.not-downloaded {
+  background: #7a9aad;
+  opacity: 0.6;
+}
+@keyframes download-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+/* Make cat-tile position relative for badge positioning */
+.cat-tile {
+  position: relative;
+}
+
+/* Offline access panel styles */
+.offline-storage-section {
+  padding: 16px;
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  margin-bottom: 16px;
+}
+
+.offline-summary {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+}
+
+.offline-ios-warning {
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  font-size: 13px;
+}
+
+/* Offline button in topbar */
+#offline-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Hide offline button text on very narrow screens */
+@media (max-width: 480px) {
+  .offline-indicator-text,
+  .sync-indicator-text {
+    display: none;
+  }
+  .offline-indicator,
+  .sync-indicator {
+    padding: 5px 8px;
+  }
+}
+
+/* ================================================================
+   MOBILE EXTENSION EXPERIENCE — Quick Lookup Overlay
+   For share target, clipboard lookup, and bookmarklet integration
+   ================================================================ */
+
+#quick-lookup-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 580;
+  background: rgba(12, 56, 70, 0.75);
+  backdrop-filter: blur(8px);
+  align-items: flex-start;
+  justify-content: center;
+  padding: 60px 16px 20px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+#quick-lookup-overlay.open {
+  display: flex;
+}
+
+.quick-lookup-box {
+  position: relative;
+  background: var(--surface);
+  border-radius: var(--radius);
+  width: min(480px, calc(100vw - 32px));
+  max-height: calc(100vh - 100px);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.quick-lookup-header {
+  padding: 20px 20px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--teal-50);
+}
+.quick-lookup-header h3 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--teal-dark);
+  margin: 0;
+}
+
+#quick-lookup-input-area {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+#quick-lookup-input {
+  width: 100%;
+  padding: 12px 14px;
+  font-family: var(--font-ui);
+  font-size: 16px;
+  color: var(--ink);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+}
+#quick-lookup-input:focus {
+  outline: none;
+  border-color: var(--teal-lt);
+}
+#quick-lookup-input::placeholder {
+  color: var(--ink-muted);
+}
+
+#quick-lookup-results {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+  min-height: 120px;
+}
+
+/* Result card for a single lookup match */
+.ql-result-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+.ql-result-card:last-child {
+  margin-bottom: 0;
+}
+
+.ql-result-header {
+  display: flex;
+  gap: 12px;
+  padding: 14px;
+  align-items: flex-start;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.ql-result-header:hover {
+  background: var(--bg);
+}
+
+.ql-result-thumb {
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: var(--bg);
+  border: 1px solid var(--border);
+}
+
+.ql-result-info {
+  flex: 1;
+  min-width: 0;
+}
+.ql-result-word {
+  font-family: 'Noto Sans JP', var(--font-ui);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--teal-dark);
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+.ql-result-reading {
+  font-size: 13px;
+  color: var(--ink-muted);
+  margin-bottom: 2px;
+}
+.ql-result-meaning {
+  font-size: 14px;
+  color: var(--ink-dim);
+  line-height: 1.4;
+}
+.ql-result-category {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-top: 6px;
+}
+
+.ql-result-actions {
+  display: flex;
+  gap: 8px;
+  padding: 0 14px 14px;
+  flex-wrap: wrap;
+}
+.ql-action-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  text-align: center;
+  border: none;
+}
+.ql-action-btn:hover {
+  transform: translateY(-1px);
+}
+.ql-action-primary {
+  background: var(--teal-dark);
+  color: #fff;
+}
+.ql-action-primary:hover {
+  background: var(--teal);
+}
+.ql-action-secondary {
+  background: var(--bg);
+  color: var(--teal-dark);
+  border: 1.5px solid var(--border);
+}
+.ql-action-secondary:hover {
+  border-color: var(--teal-lt);
+  background: var(--teal-50);
+}
+
+.ql-audio-row {
+  display: flex;
+  gap: 6px;
+  padding: 0 14px 10px;
+}
+.ql-audio-btn {
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--teal-dark);
+  cursor: pointer;
+}
+.ql-audio-btn:hover {
+  background: var(--teal-50);
+}
+
+/* Multiple results list */
+.ql-multi-results {
+  padding: 8px 0;
+}
+.ql-multi-word {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.12s;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.ql-multi-word:last-child {
+  border-bottom: none;
+}
+.ql-multi-word:hover {
+  background: var(--bg);
+}
+.ql-multi-thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: var(--bg);
+}
+.ql-multi-info {
+  flex: 1;
+  min-width: 0;
+}
+.ql-multi-ja {
+  font-family: 'Noto Sans JP', var(--font-ui);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--teal-dark);
+}
+.ql-multi-en {
+  font-size: 13px;
+  color: var(--ink-muted);
+}
+.ql-multi-cat {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink-muted);
+}
+
+/* Empty state */
+.ql-empty {
+  text-align: center;
+  padding: 32px 20px;
+  color: var(--ink-muted);
+  font-size: 14px;
+}
+.ql-empty-icon {
+  font-size: 32px;
+  margin-bottom: 12px;
+  opacity: 0.5;
+}
+
+/* Clipboard prompt */
+.ql-clipboard-prompt {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--teal-50);
+  border: 1.5px solid var(--teal-lt);
+  border-radius: var(--radius-sm);
+  margin-bottom: 12px;
+}
+.ql-clipboard-text {
+  flex: 1;
+  font-size: 14px;
+  color: var(--ink-dim);
+}
+.ql-clipboard-text strong {
+  color: var(--teal-dark);
+}
+.ql-clipboard-btn {
+  padding: 8px 14px;
+  background: var(--teal-dark);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.ql-clipboard-btn:hover {
+  background: var(--teal);
+}
+.ql-clipboard-dismiss {
+  background: none;
+  border: none;
+  color: var(--ink-muted);
+  cursor: pointer;
+  padding: 4px;
+  font-size: 16px;
+}
+
+@media (max-width: 480px) {
+  #quick-lookup-overlay {
+    padding: 20px 12px;
+  }
+  .quick-lookup-box {
+    width: 100%;
+    max-height: calc(100vh - 40px);
+  }
+  .ql-result-thumb {
+    width: 52px;
+    height: 52px;
+  }
+  .ql-action-btn {
+    min-width: 100px;
+    padding: 12px 10px;
+  }
+}
+
+.topbar-scan-btn {
+  background: var(--teal-50);
+  border-color: var(--teal-lt);
+  color: var(--teal-dark);
+}
+.topbar-scan-btn:hover {
+  background: var(--teal-dark);
+  color: #fff;
+  border-color: var(--teal-dark);
+}
+
+#scan-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 580;
+  background: rgba(12, 56, 70, 0.75);
+  backdrop-filter: blur(8px);
+  align-items: flex-start;
+  justify-content: center;
+  padding: 60px 16px 20px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+#scan-overlay.open {
+  display: flex;
+}
+.scan-box {
+  padding: 0;
+}
+#scan-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+}
+.scan-hint {
+  margin: 0;
+  font-size: 14px;
+  color: var(--ink-muted);
+  line-height: 1.5;
+}
+.scan-capture-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 24px;
+  background: var(--teal-dark);
+  color: #fff;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-ui);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.scan-capture-btn:hover {
+  background: var(--teal-darker, var(--teal-dark));
+}
+.scan-capture-btn input[type="file"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+#scan-status {
+  width: 100%;
+}
+
+/* ── Dictionary Results (from full JMdict) ───────────────────────*/
+.ql-dict-results {
+  padding: 8px 0;
+}
+.ql-dict-header-bar {
+  padding: 8px 14px;
+  background: var(--teal-50);
+  border-bottom: 1px solid var(--border);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--teal-dark);
+}
+.ql-dict-source {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.ql-dict-card {
+  padding: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.ql-dict-card:last-child {
+  border-bottom: none;
+}
+.ql-dict-header {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+.ql-dict-word {
+  font-family: 'Noto Sans JP', var(--font-ui);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--teal-dark);
+}
+.ql-dict-reading {
+  font-size: 14px;
+  color: var(--ink-muted);
+}
+.ql-dict-pos {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink-muted);
+  background: var(--bg);
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+.ql-dict-gloss {
+  font-size: 14px;
+  color: var(--ink-dim);
+  line-height: 1.5;
+}
+.ql-dict-actions {
+  margin-top: 8px;
+}
+.ql-dict-more {
+  padding: 12px 14px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--ink-muted);
+}
+.ql-dict-mini-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  background: var(--teal-50);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+/* ── HOME — Grammar entry point (separate from the topic grid) ───*/
+.home-grammar {
+  padding: 0 36px 56px;
+  max-width: 1100px; width: 100%; margin: 0 auto;
+}
+.grammar-entry-tile {
+  display: flex; align-items: center; gap: 16px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1.5px solid var(--border);
+  padding: 18px 24px;
+  cursor: pointer;
+  max-width: 420px; margin: 0 auto;
+  transition: transform .18s, box-shadow .18s, border-color .18s;
+  box-shadow: 0 2px 8px rgba(12,56,70,.06);
+}
+.grammar-entry-tile:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+  border-color: var(--teal-lt);
+}
+.grammar-entry-icon {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px; font-weight: 700; color: var(--teal-dark);
+  width: 44px; height: 44px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg); border-radius: 10px;
+}
+.grammar-entry-name { font-size: 15px; font-weight: 700; color: var(--ink); }
+.grammar-entry-count { font-size: 12px; color: var(--ink-muted); margin-top: 2px; }
+.grammar-entry-arrow { margin-left: auto; color: var(--ink-muted); font-size: 18px; }
+
+/* ── Grammar overlay ───────────────────────────────────────────*/
+#grammar-overlay {
+  display: none; position: fixed; inset: 0; z-index: 500;
+  background: rgba(5,20,35,.82);
+  backdrop-filter: blur(6px);
+  align-items: flex-start; justify-content: center;
+  padding: 60px 20px 20px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+#grammar-overlay.open { display: flex; }
+.grammar-box {
+  background: var(--surface); border-radius: var(--radius);
+  width: min(560px, calc(100vw - 32px));
+  box-shadow: var(--shadow-lg);
+  padding: 24px;
+  max-height: calc(100svh - 100px);
+  overflow-y: auto;
+}
+.grammar-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px; color: var(--teal-dark);
+  margin-bottom: 18px;
+}
+.grammar-group { margin-bottom: 18px; }
+.grammar-group-title {
+  font-size: 12px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .04em; color: var(--ink-muted);
+  margin-bottom: 8px;
+}
+.grammar-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.grammar-chip {
+  background: var(--bg); border: 1.5px solid var(--border);
+  border-radius: 999px; padding: 6px 14px;
+  font-size: 13px; color: var(--ink); cursor: pointer;
+  transition: border-color .15s, background .15s;
+}
+.grammar-chip:hover { border-color: var(--teal-lt); background: var(--surface); }
+
+.grammar-back {
+  background: none; border: none; color: var(--teal-dark);
+  font-size: 14px; font-weight: 600; cursor: pointer;
+  margin-bottom: 18px; padding: 4px 0;
+}
+.grammar-detail-en {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px; color: var(--ink); margin-bottom: 4px;
+}
+.grammar-detail-def {
+  font-size: 13px; color: var(--ink-muted); margin-bottom: 20px;
+}
+.grammar-detail-group { font-style: italic; }
+.grammar-detail-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 0;
+  border-top: 1px solid var(--border);
+}
+.grammar-detail-flag { font-size: 18px; flex-shrink: 0; }
+.grammar-detail-text { flex: 1; font-size: 16px; color: var(--ink); }
+.grammar-detail-reading { font-size: 13px; color: var(--ink-muted); }
+.grammar-audio-btn {
+  background: var(--bg); border: 1px solid var(--border); border-radius: 50%;
+  width: 34px; height: 34px; cursor: pointer; font-size: 15px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+/* Same small-text-link treatment as .infl-usage-btn (the inflected-forms
+   "View usage" button) -- same feature, same affordance, different data
+   source (data/examples.json instead of data/inflection-examples-*.json). */
+.grammar-usage-btn {
+  background: none; border: none; padding: 0; flex-shrink: 0;
+  font-size: 11.5px; font-weight: 600; color: var(--teal);
+  cursor: pointer; text-decoration: underline;
+}
+.grammar-usage-btn:hover { color: var(--teal-dark); }
+.grammar-usage-all-btn {
+  display: block; width: 100%; margin-top: 14px; padding: 10px;
+  background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+  font-size: 13px; font-weight: 600; color: var(--teal-dark); cursor: pointer;
+}
+.grammar-usage-all-btn:hover { background: var(--teal-50); }
+
+/* Definition / example line under a general-dictionary gloss. The Hindi and
+   French dictionaries carry an explanation as well as a translation, which
+   JMdict results do not, so this only appears for those. */
+.ql-dict-def {
+  margin-top: 4px; font-size: 12px; line-height: 1.5;
+  color: var(--ink-muted);
+}
+
+/* Phrase realisations -- which other languages say this concept as a phrase.
+   Deliberately quiet: it is context, not the answer the card is testing. */
+.pwa-phrase-list { padding: 4px 0 2px; }
+.pwa-phrase-row {
+  display: flex; align-items: baseline; gap: 10px;
+  padding: 5px 0; border-bottom: 1px solid var(--border);
+}
+.pwa-phrase-row:last-of-type { border-bottom: none; }
+.pwa-phrase-flag { font-size: 13px; }
+.pwa-phrase-lang {
+  font-size: 11px; font-weight: 600; color: var(--ink-muted);
+  min-width: 62px; letter-spacing: .02em;
+}
+.pwa-phrase-text { font-size: 16px; flex: 1; }
+.pwa-phrase-note {
+  margin: 8px 0 0; font-size: 11px; line-height: 1.5; color: var(--ink-muted);
+}
+
+/* A language the chosen direction doesn't include, shown under the pair for
+   comparison. Quieter than the two being studied, so the card still reads as
+   one direction rather than a four-way table. */
+.pwa-ex-also {
+  display: flex; align-items: baseline; gap: 6px;
+  margin-top: 3px; padding-left: 2px;
+  font-size: 13px; color: var(--ink-muted); opacity: .82;
+}
+.pwa-ex-also .pwa-ex-text { font-size: 13px; }
+
+/* The katakana pronunciation button sits on its own row under Word/Meaning:
+   the katakana of a longer English word (トゥー・ディスティンググウィシュ for
+   "to distinguish") cannot fit a button sized to sit beside them, and wrapped
+   to five lines when it tried. Full width, single line, ellipsis if even that
+   is not enough. */
+.focus-kata-row { margin: 8px 0 2px; text-align: center; }
+.focus-kata-row .ptw-kata-btn {
+  display: inline-block; max-width: 100%;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* ── Professions & Specialisations ──────────────────────────── */
+.home-professions {
+  padding: 40px 20px 48px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  max-width: 1100px; width: 100%; margin: 0 auto;
+}
+.profession-entry-tile {
+  display: flex; align-items: center; gap: 16px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1.5px solid var(--border);
+  padding: 18px 24px;
+  cursor: pointer;
+  max-width: 460px; margin: 0 auto 20px;
+  transition: transform .18s, box-shadow .18s, border-color .18s;
+  box-shadow: 0 2px 8px rgba(12,56,70,.06);
+}
+.profession-entry-tile:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+  border-color: var(--teal-lt);
+}
+.profession-entry-icon {
+  font-size: 24px;
+  width: 44px; height: 44px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0, 131, 143, 0.08); border-radius: 10px;
+  color: #00838F;
+}
+.profession-entry-name { font-size: 15px; font-weight: 700; color: var(--ink); text-align: left; }
+.profession-entry-count { font-size: 12px; color: var(--ink-muted); margin-top: 2px; text-align: left; }
+.profession-entry-arrow { margin-left: auto; color: var(--ink-muted); font-size: 18px; }
+
+.profession-chips-grid {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+  max-width: 900px; margin: 0 auto;
+}
+.profession-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 7px 14px;
+  font-size: 13px; font-weight: 500;
+  color: var(--ink);
+  cursor: pointer;
+  transition: all .16s ease;
+}
+.profession-chip:hover {
+  background: rgba(0, 131, 143, 0.08);
+  border-color: #00838F;
+  color: #00838F;
+  transform: translateY(-1px);
+}
+.profession-chip-count {
+  font-size: 11px;
+  color: var(--ink-muted);
+  background: var(--bg);
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+
+/* Category header profession subfilter */
+.prof-filter-container {
+  display: flex; align-items: center; gap: 8px;
+  margin-left: auto;
+  background: rgba(0, 0, 0, 0.18);
+  padding: 6px 14px;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+.prof-filter-label {
+  font-size: 13px; font-weight: 600; color: #fff; white-space: nowrap;
+}
+.prof-subcat-select {
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--ink);
+  border: none;
+  border-radius: 16px;
+  padding: 5px 12px;
+  font-size: 13px; font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  max-width: 260px;
+}
+@media (max-width: 640px) {
+  .cat-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .prof-filter-container {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 10px;
+    justify-content: space-between;
+  }
+  .prof-subcat-select {
+    max-width: none;
+    flex: 1;
+  }
+}

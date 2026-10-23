@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page not found &mdash; Shabdah</title>
+  <meta name="description" content="The research behind illustrated vocabulary learning, and how Shabdah applies it.">
+
+  <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/favicon-180.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,400..800,0..100,0..1;1,9..144,400..800,0..100,0..1&family=Inter:opsz,wght@14..32,400..800&family=Noto+Sans+JP:wght@400;600;700&family=Noto+Serif+JP:wght@600;700&display=swap" rel="stylesheet">
+
+  <meta name="robots" content="noindex">
+  <!-- SEO -->
+    <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Shabdah">
+  <meta property="og:url" content="https://shabdah.app/404.html">
+  <meta property="og:title" content="Methodology — Shabdah">
+  <meta property="og:description" content="The research behind illustrated vocabulary learning, and how Shabdah applies it.">
+  <meta property="og:image" content="https://shabdah.app/assets/icons/og-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Methodology — Shabdah">
+  <meta name="twitter:description" content="The research behind illustrated vocabulary learning, and how Shabdah applies it.">
+  <meta name="twitter:image" content="https://shabdah.app/assets/icons/og-image.jpg">
+  <meta name="theme-color" content="#0C3846">
+  <link rel="manifest" href="site.webmanifest">
+
+  <link rel="stylesheet" href="styles.css?v=16">
+
+
+  <!-- Supabase (CDN version - no build step / npm needed) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script>
+    // Global Supabase connection, used by auth.js and the account dropdown.
+    const SUPABASE_URL = "https://pqdrtqnmfzgnrderwrzl.supabase.co";
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_yAeNx_8QM8zLa26fQw_wMw_jelTeQep";
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+  </script>
+  <style>
+    /* Inline fallback so this can't break if styles.css is stale/uncached */
+    #auth-overlay { display: none; position: fixed; inset: 0; z-index: 560;
+      background: rgba(12,56,70,.55); align-items: center; justify-content: center; }
+    #auth-overlay.open { display: flex; }
+    #review-overlay { display: none; position: fixed; inset: 0; z-index: 560;
+      background: rgba(12,56,70,.55); align-items: center; justify-content: center; }
+    #review-overlay.open { display: flex; }
+    #review-box { position: relative; background: #fff; border-radius: 16px;
+      max-width: 420px; width: 90%; padding: 32px; text-align: center; }
+    #review-card-area img { max-width: 100%; border-radius: 10px; cursor: pointer; }
+    #review-controls button { padding: 10px 20px; margin: 0 6px; border-radius: 8px;
+      border: none; font-weight: 600; cursor: pointer; }
+    .review-btn-again { background: #f4d4d0; color: #8a2e20; }
+    .review-btn-good { background: #cfe8d8; color: #1a5c33; }
+    #review-card-area img.review-crop-front { clip-path: inset(0 0 14% 0); }
+  </style>  <script>
+    // Offline support. Registered on every page so the whole site,
+    // not just the app, survives losing connection.
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+      });
+    }
+  </script>
+
+</head>
+<body>
+
+<!-- ═══════════ AUTH OVERLAY ═══════════ -->
+<div id="auth-overlay" onclick="if(event.target===this)closeAuth()">
+  <div class="info-box" onclick="event.stopPropagation()" style="max-width:340px;">
+    <button class="focus-close" onclick="closeAuth()" aria-label="Close">✕</button>
+    <div class="auth-tabs" style="display:flex; gap:8px; margin-bottom:14px;">
+      <button id="auth-tab-login" class="nav-info-link" onclick="setAuthTab('login')">Log In</button>
+      <button id="auth-tab-signup" class="nav-info-link" onclick="setAuthTab('signup')">Sign Up</button>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:10px;">
+      <input id="auth-form-email" type="email" placeholder="Email" autocomplete="email">
+      <input id="auth-form-password" type="password" placeholder="Password" autocomplete="current-password">
+      <button id="auth-submit-btn" onclick="submitAuthForm()">Log In</button>
+      <div id="auth-message" style="font-size:13px; min-height:18px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ REVIEW OVERLAY ═══════════ -->
+<div id="review-overlay" onclick="if(event.target===this)closeReview()">
+  <div id="review-box" onclick="event.stopPropagation()">
+    <button class="focus-close" onclick="closeReview()" aria-label="Close">✕</button>
+    <div id="review-progress" style="font-size:13px; opacity:.7; margin-bottom:10px;"></div>
+    <div id="review-card-area"></div>
+    <div id="review-controls" style="margin-top:16px;"></div>
+  </div>
+</div>
+
+<!-- ═══════════ MY NOTES OVERLAY ═══════════ -->
+<div id="notes-overlay" onclick="if(event.target===this)closeMyNotes()">
+  <div class="info-box" onclick="event.stopPropagation()" style="max-width:520px;">
+    <button class="focus-close" onclick="closeMyNotes()" aria-label="Close">✕</button>
+    <h3 style="margin-bottom:14px;">My Notes</h3>
+    <div id="notes-list-content"></div>
+  </div>
+</div>
+
+<!-- ═══════════ MY ACCOUNT OVERLAY ═══════════ -->
+<div id="account-overlay" onclick="if(event.target===this)closeMyAccount()">
+  <div class="info-box" onclick="event.stopPropagation()" style="max-width:520px;">
+    <button class="focus-close" onclick="closeMyAccount()" aria-label="Close">✕</button>
+    <div id="account-tab-body"></div>
+  </div>
+</div>
+
+<header class="ptw-page-header-wrap">
+  <a href="index.html">
+    <svg class="ptw-header-banner" viewBox="0 0 1600 300" role="img" aria-label="Shabdah">
+    <title>Shabdah</title>
+    <defs>
+      <!-- Base light aquamarine gradient with smooth luminous transition -->
+      <linearGradient id="ptwAquaGrad_404" x1="0%" y1="0%" x2="100%" y2="85%">
+        <stop offset="0%"   stop-color="#1B7882"/>
+        <stop offset="35%"  stop-color="#249E9F"/>
+        <stop offset="70%"  stop-color="#34B8AB"/>
+        <stop offset="100%" stop-color="#48CDB8"/>
+      </linearGradient>
+
+      <!-- Soft horizon fade into page background at top and bottom -->
+      <linearGradient id="ptwPageBlend_404" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"   stop-color="#FFFFFF" stop-opacity="0.75"/>
+        <stop offset="5%"   stop-color="#FFFFFF" stop-opacity="0"/>
+        <stop offset="93%"  stop-color="#FFFFFF" stop-opacity="0"/>
+        <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.95"/>
+      </linearGradient>
+
+      <!-- Swan luminous aura -->
+      <radialGradient id="swanAura_404" cx="48%" cy="48%" r="52%">
+        <stop offset="0%"   stop-color="#FFFFFF" stop-opacity="0.34"/>
+        <stop offset="55%"  stop-color="#A7F3D0" stop-opacity="0.15"/>
+        <stop offset="100%" stop-color="#38A3A5" stop-opacity="0"/>
+      </radialGradient>
+
+      <!-- Text depth shadow -->
+      <filter id="ptwTextDepth_404" x="-10%" y="-10%" width="120%" height="130%">
+        <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#0E484F" flood-opacity="0.32"/>
+      </filter>
+      
+      <filter id="ptwSwanDepth_404" x="-10%" y="-10%" width="120%" height="120%">
+        <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0E484F" flood-opacity="0.25"/>
+      </filter>
+    </defs>
+
+    <!-- 1. Background fill -->
+    <rect width="1600" height="300" fill="url(#ptwAquaGrad_404)"/>
+    
+    <!-- 2. Ambient light orbs & water wave ribbons -->
+    <circle cx="1380" cy="120" r="150" fill="#64DFDF" opacity="0.12"/>
+    <circle cx="850" cy="50" r="180" fill="#FFFFFF" opacity="0.05"/>
+    
+    <!-- Flowing layered waves -->
+    <path d="M0 232 C 210 196, 360 264, 590 236 S 1010 192, 1240 230 S 1490 258, 1600 234 L1600 300 L0 300 Z"
+          fill="#FFFFFF" opacity="0.10"/>
+    <path d="M0 258 C 240 228, 430 284, 700 262 S 1120 224, 1360 258 S 1530 278, 1600 264 L1600 300 L0 300 Z"
+          fill="#A7F3D0" opacity="0.20"/>
+    <path d="M0 276 C 260 254, 480 292, 760 278 S 1160 250, 1400 278 S 1550 292, 1600 282 L1600 300 L0 300 Z"
+          fill="#FFFFFF" opacity="0.16"/>
+
+    <!-- 3. Swan & Water Ripple Composition -->
+    <g class="ptw-header-swan-group">
+      <!-- Luminous pearl aura behind swan -->
+      <circle cx="126" cy="144" r="98" fill="url(#swanAura_404)"/>
+      <circle cx="126" cy="144" r="82" fill="none" stroke="#FFFFFF" stroke-width="1.4" stroke-opacity="0.32" stroke-dasharray="4 4"/>
+      
+      <!-- Water ripples at the base of the swan -->
+      <ellipse cx="126" cy="228" rx="58" ry="7" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-opacity="0.45"/>
+      <ellipse cx="126" cy="237" rx="76" ry="6" fill="none" stroke="#A7F3D0" stroke-width="1.4" stroke-opacity="0.32"/>
+      
+      <!-- The Swan Mark -->
+      <image href="assets/icons/shabdah-swan-mark-white.png" x="52" y="38" width="148" height="216" opacity="0.99" filter="url(#ptwSwanDepth_404)"/>
+    </g>
+
+    <!-- 4. Shabdah Wordmark & Balanced Subtitle -->
+    <g class="ptw-header-brand-group">
+      <text x="224" y="170" text-anchor="start" fill="#FFFFFF"
+            font-family="Fraunces, Georgia, 'Times New Roman', serif"
+            font-weight="800" font-size="114" letter-spacing="1.2"
+            filter="url(#ptwTextDepth_404)"
+            style="font-variation-settings:'SOFT' 35,'WONK' 1; font-optical-sizing:auto;">Shabdah</text>
+      <circle cx="227" cy="211" r="3.2" fill="#FFE898" opacity="0.92"/>
+      <text x="238" y="217" text-anchor="start" fill="#E6FAF8"
+            font-family="'DM Sans', -apple-system, sans-serif"
+            font-weight="600" font-size="20" letter-spacing="4.2" opacity="0.95">VISUAL VOCABULARY</text>
+    </g>
+
+    <!-- 5. Page-Specific Orbiting Motifs -->
+<g fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.8">
+      <g transform="translate(900,130) rotate(0) scale(1.3)"><circle cx="0" cy="0" r="18"/><path d="M6 -8 L-2 2 L-6 8 L2 -2 Z"/></g>
+
+<g transform="translate(1250,70) rotate(-8) scale(0.95)"><path d="M0 -19 C 10 -19, 17 -11 ,17 -2 C 17 10, 0 23, 0 23 C 0 23, -17 10, -17 -2 C -17 -11, -10 -19, 0 -19 Z"/><circle cx="0" cy="-2" r="5.5"/></g>
+    </g>
+
+    <g fill="#A7F3D0" opacity="0.6">
+      <circle cx="660" cy="52"  r="4.5"/>
+      <circle cx="1310" cy="140" r="3.5"/>
+      <circle cx="1230" cy="252" r="4"/>
+    </g>
+    <g stroke="#A7F3D0" stroke-width="2.6" fill="none" opacity="0.55" stroke-linecap="round">
+      <path d="M980 226 h16 M988 218 v16"/>
+      <path d="M1520 110 h14 M1527 103 v14"/>
+    </g>
+
+    <!-- 6. Seamless page blend overlay -->
+    <rect width="1600" height="300" fill="url(#ptwPageBlend_404)" pointer-events="none"/>
+  </svg>
+  </a>
+</header>
+
+<nav class="home-nav">
+  <a class="nav-brand" href="index.html" style="text-decoration:none;">
+    <img class="nav-logo" src="assets/icons/shabdah-logo.png" alt="Shabdah logo">
+    <span class="nav-brand-name">Shabdah</span>
+  </a>
+
+  <div class="nav-links">
+    <a class="nav-info-link" href="how-to-use.html">How it works</a>
+    <a class="nav-info-link" href="pricing.html">Pricing</a>
+    <a class="nav-info-link" href="about.html">About</a>
+  </div>
+
+  <div class="nav-spacer"></div>
+
+  <div class="nav-right">
+    <a class="nav-cta" href="index.html">Browse the dictionary</a>
+  <div class="auth-nav-area"></div>
+  </div>
+</nav>
+
+<main class="ptw-404">
+  <p class="ptw-404-eyebrow">404</p>
+  <h1>This word isn't in the dictionary yet</h1>
+  <p class="ptw-404-body">
+    The page you're looking for doesn't exist, may have moved, or the link might be mistyped.
+  </p>
+  <div class="ptw-404-actions">
+    <a href="index.html" class="btn-primary">Go to the dictionary</a>
+    <a href="how-to-use.html" class="btn-secondary">How it works</a>
+  </div>
+  <div class="ptw-404-links">
+    <a href="how-to-use.html">How it works</a>
+    <span class="ptw-footer-dot">&middot;</span>
+    <a href="pricing.html">Pricing</a>
+    <span class="ptw-footer-dot">&middot;</span>
+    <a href="contact.html">Contact</a>
+  </div>
+</main>
+
+<footer class="ptw-footer">
+  <div class="ptw-footer-grid">
+    <div class="ptw-footer-brand">
+      <img src="assets/icons/shabdah-logo.png" alt="Shabdah">
+      <p class="ptw-footer-tagline">
+        A visual dictionary and flashcard system for languages, built on illustration
+        rather than translation.
+      </p>
+    </div>
+    <div class="ptw-footer-col">
+      <h4>Product</h4>
+      <ul>
+        <li><a href="how-to-use.html">How it works</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
+        <li><a href="for-institutions.html">For Institutions</a></li>
+      </ul>
+    </div>
+    <div class="ptw-footer-col">
+      <h4>Learn</h4>
+      <ul>
+        <li><a href="how-to-use.html">How it works</a></li>
+        <li><a href="about.html">About the project</a></li>
+      </ul>
+    </div>
+    <div class="ptw-footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="terms.html">Terms of Use</a></li>
+        <li><a href="privacy.html">Privacy Policy</a></li>
+      
+        <li><a href="sources-and-licenses.html">Sources &amp; Licenses</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="ptw-footer-base">
+    <p>
+      Flashcard content, structural design, and illustrations are original to Shabdah. &copy; Shabdah.
+    </p>
+    <p>
+      Dictionary and example-sentence data draw in part on third-party open resources, used under
+      their respective licences. See <a href="sources-and-licenses.html">Sources &amp; Licenses</a>
+      for full details and attribution.
+    </p>
+  </div>
+</footer>
+<script src="auth.js?v=9"></script>
+<script src="nav-data.js?v=2"></script>
+<script src="entitlement.js?v=9"></script>
+<script src="notes.js?v=8"></script>
+<script src="account.js?v=9"></script>
+<script src="srs.js?v=8"></script>
+</body>
+</html>

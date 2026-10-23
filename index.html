@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shabdah — Visual Vocabulary</title>
+  <meta name="description" content="Learn Japanese, Hindi and French vocabulary through illustrations, translated into English. Organised by topic.">
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/favicon-180.png">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,400..800,0..100,0..1;1,9..144,400..800,0..100,0..1&family=Inter:opsz,wght@14..32,400..800&family=Noto+Sans+JP:wght@400;600;700&family=Noto+Serif+JP:wght@600;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- SEO -->
+  <link rel="canonical" href="https://shabdah.app/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Shabdah">
+  <meta property="og:url" content="https://shabdah.app/">
+  <meta property="og:title" content="Shabdah — Visual Vocabulary">
+  <meta property="og:description" content="Learn vocabulary through illustrations in Japanese, English, Hindi and French. 100-concept licensing demo.">
+  <meta property="og:image" content="https://shabdah.app/assets/icons/og-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Shabdah — Visual Vocabulary">
+  <meta name="twitter:description" content="Learn vocabulary through illustrations in Japanese, English, Hindi and French. 100-concept licensing demo.">
+  <meta name="twitter:image" content="https://shabdah.app/assets/icons/og-image.jpg">
+  <meta name="theme-color" content="#0C3846">
+  <link rel="manifest" href="site.webmanifest">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Shabdah",
+    "url": "https://shabdah.app/",
+    "description": "Learn vocabulary through illustrations in Japanese, English, Hindi and French.",
+    "inLanguage": ["en", "ja", "hi", "fr"],
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": { "@type": "EntryPoint", "urlTemplate": "https://shabdah.app/?q={search_term_string}" },
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+
+  <link rel="stylesheet" href="styles.css?v=20">
+  <script>
+    // Offline support. Registered on every page so the whole site,
+    // not just the app, survives losing connection.
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+      });
+    }
+  </script>
+
+
+  <!-- Supabase (CDN version - no build step / npm needed) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script>
+    // Global Supabase connection, used by auth.js and future SRS code.
+    const SUPABASE_URL = "https://pqdrtqnmfzgnrderwrzl.supabase.co";
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_yAeNx_8QM8zLa26fQw_wMw_jelTeQep";
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+  </script>
+  <style>
+    /* Inline fallback so this can't break if styles.css is stale/uncached */
+    #auth-overlay { display: none; position: fixed; inset: 0; z-index: 560;
+      background: rgba(12,56,70,.55); align-items: center; justify-content: center; }
+    #auth-overlay.open { display: flex; }
+    #review-overlay { display: none; position: fixed; inset: 0; z-index: 560;
+      background: rgba(12,56,70,.55); align-items: center; justify-content: center; }
+    #review-overlay.open { display: flex; }
+    #review-box { position: relative; background: #fff; border-radius: 16px;
+      max-width: 420px; width: 90%; padding: 32px; text-align: center; }
+    #review-card-area img { max-width: 100%; border-radius: 10px; cursor: pointer; }
+    #review-controls button { padding: 10px 20px; margin: 0 6px; border-radius: 8px;
+      border: none; font-weight: 600; cursor: pointer; }
+    .review-btn-again { background: #f4d4d0; color: #8a2e20; }
+    .review-btn-good { background: #cfe8d8; color: #1a5c33; }
+    #review-card-area img.review-crop-front { clip-path: inset(0 0 14% 0); }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════ QUICK LOOKUP OVERLAY (mobile share target / clipboard) ═══════════ -->
+<div id="quick-lookup-overlay" role="dialog" aria-modal="true"
+  onclick="if(event.target===this)closeQuickLookup()">
+  <div class="quick-lookup-box">
+    <button class="focus-close" onclick="closeQuickLookup()" aria-label="Close">✕</button>
+    <div class="quick-lookup-header">
+      <h3>Look up a word</h3>
+    </div>
+    <div id="quick-lookup-input-area">
+      <input type="text" id="quick-lookup-input" placeholder="Type or paste text…"
+        oninput="runQuickLookup(this.value)" autocomplete="off" spellcheck="false">
+    </div>
+    <div id="quick-lookup-results"></div>
+  </div>
+</div>
+
+<!-- ═══════════ SCAN OVERLAY (camera OCR -> Quick Lookup) ═══════════
+     Feature 4, narrowed 2026-09-20: the original "scan-anything object
+     detection" spec was found not achievable at this project's 100%-accuracy
+     bar (no image-classification model reaches 100% on open-set real-world
+     photos). This is a different, deterministic feature instead: OCR reads
+     TEXT from a photo, and the extracted text is looked up through the
+     exact same already-verified dictionary pipeline Quick Lookup uses --
+     so the translation/definition shown is never less accurate than typing
+     the word in by hand. The only uncertain step is what the OCR engine
+     read, and that is never hidden: the extracted text is shown, editable,
+     in the Quick Lookup input right after a scan, before any result is
+     asserted. -->
+<div id="scan-overlay" role="dialog" aria-modal="true" style="display:none;"
+  onclick="if(event.target===this)closeScanOverlay()">
+  <div class="quick-lookup-box scan-box">
+    <button class="focus-close" onclick="closeScanOverlay()" aria-label="Close">✕</button>
+    <div class="quick-lookup-header">
+      <h3>Scan Text</h3>
+    </div>
+    <div id="scan-body">
+      <p class="scan-hint">Photograph a sign, menu, or label. The text found in the photo
+        will be looked up automatically -- nothing is guessed from the image itself.</p>
+      <label class="scan-capture-btn" id="scan-capture-label">
+        <input type="file" id="scan-file-input" accept="image/*" capture="environment"
+          onchange="handleScanFile(this.files[0])">
+        &#128247; Take a Photo
+      </label>
+      <div id="scan-status"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ FOCUS OVERLAY (concept detail, with direction tabs) ═══════════ -->
+<div id="focus-overlay" role="dialog" aria-modal="true"
+  onclick="if(event.target===this)closeFocus()">
+  <button class="focus-close" onclick="closeFocus()" aria-label="Close">✕</button>
+  <div id="focus-card-wrap">
+    <div id="focus-card-inner"></div>
+  </div>
+</div>
+
+<!-- ═══════════ GRAMMAR OVERLAY ═══════════
+     Separate from the topic-category system on purpose: grammar concepts
+     have no card image, just term + translations + audio, so this reuses
+     the overlay chrome (close button, click-outside-to-close) but not the
+     illustrated-card layout. -->
+<div id="grammar-overlay" role="dialog" aria-modal="true"
+  onclick="if(event.target===this)closeGrammar()">
+  <button class="focus-close" onclick="closeGrammar()" aria-label="Close">✕</button>
+  <div class="grammar-box" onclick="event.stopPropagation()">
+    <div id="grammar-list-view">
+      <h2 class="grammar-title">Grammar</h2>
+      <div id="grammar-groups"></div>
+    </div>
+    <div id="grammar-detail-view" style="display:none;">
+      <button class="grammar-back" onclick="showGrammarList()">← Back</button>
+      <div id="grammar-detail-body"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ USAGE OVERLAY ═══════════
+     "View usage" sub-page for a single inflected form, opened from within
+     an already-open flashcard's Inflected forms section -- so it needs a
+     higher z-index than #focus-overlay to actually appear on top of it
+     (see styles.css), not a separate top-level destination like grammar/
+     search below. -->
+<div id="usage-overlay" role="dialog" aria-modal="true"
+  onclick="if(event.target===this)closeUsage()">
+  <button class="focus-close" onclick="closeUsage()" aria-label="Close">✕</button>
+  <div class="usage-box" onclick="event.stopPropagation()">
+    <div id="usage-body"></div>
+  </div>
+</div>
+
+
+<!-- ═══════════ AUTH OVERLAY ═══════════ -->
+<div id="auth-overlay" onclick="if(event.target===this)closeAuth()">
+  <div class="info-box" onclick="event.stopPropagation()" style="max-width:340px;">
+    <button class="focus-close" onclick="closeAuth()" aria-label="Close">✕</button>
+    <div class="auth-tabs" style="display:flex; gap:8px; margin-bottom:14px;">
+      <button id="auth-tab-login" class="nav-info-link" onclick="setAuthTab('login')">Log In</button>
+      <button id="auth-tab-signup" class="nav-info-link" onclick="setAuthTab('signup')">Sign Up</button>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:10px;">
+      <input id="auth-form-email" type="email" placeholder="Email" autocomplete="email">
+      <input id="auth-form-password" type="password" placeholder="Password" autocomplete="current-password">
+      <button id="auth-submit-btn" onclick="submitAuthForm()">Log In</button>
+      <div id="auth-message" style="font-size:13px; min-height:18px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ REVIEW OVERLAY ═══════════ -->
+<div id="review-overlay" onclick="if(event.target===this)closeReview()">
+  <div id="review-box" onclick="event.stopPropagation()">
+    <button class="focus-close" onclick="closeReview()" aria-label="Close">✕</button>
+    <div id="review-progress" style="font-size:13px; opacity:.7; margin-bottom:10px;"></div>
+    <div id="review-card-area"></div>
+    <div id="review-controls" style="margin-top:16px;"></div>
+  </div>
+</div>
+
+<!-- ═══════════ ADD TO CATEGORY OVERLAY ═══════════ -->
+<!-- Existing categories are real tappable buttons here -- the previous
+     version used a plain text prompt() that listed category names as
+     a sentence and made you type one out by hand to match it exactly.
+     Deliberately kept OUTSIDE #page-home: its trigger button lives inside
+     #focus-overlay, which opens from either page, but #page-home is
+     display:none whenever #page-app (category browsing) is active -- so
+     when this overlay was nested inside #page-home it silently rendered
+     at zero size any time "Add to category" was clicked while browsing a
+     category instead of sitting on the homepage. -->
+<div id="add-category-overlay" onclick="if(event.target===this)closeAddToCategoryPicker()">
+  <div class="info-box" onclick="event.stopPropagation()" style="max-width:420px;">
+    <button class="focus-close" onclick="closeAddToCategoryPicker()" aria-label="Close">✕</button>
+    <h3 style="margin-bottom:12px;">Add to category</h3>
+    <div id="add-category-existing"></div>
+    <div style="display:flex; gap:8px; margin-top:14px;">
+      <input type="text" id="add-category-new-name" placeholder="New category name" style="flex:1;">
+      <button class="btn-primary" onclick="handleAddToNewCategory()">Create &amp; add</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ MY NOTES OVERLAY ═══════════ -->
+<!-- Deliberately kept OUTSIDE #page-home, same reasoning as
+     #add-category-overlay above: its trigger (the account dropdown) lives
+     in the topbar that's shared between the homepage and category-browsing
+     views, but #page-home is display:none whenever #page-app is active --
+     so nested inside #page-home this silently rendered at zero size any
+     time "My Notes" was opened from a category view instead of the
+     homepage. -->
+<div id="notes-overlay" onclick="if(event.target===this)closeMyNotes()">
+  <div class="info-box" onclick="event.stopPropagation()" style="max-width:520px;">
+    <button class="focus-close" onclick="closeMyNotes()" aria-label="Close">✕</button>
+    <h3 style="margin-bottom:14px;">My Notes</h3>
+    <div id="notes-list-content"></div>
+  </div>
+</div>
+
+<!-- ═══════════ MY ACCOUNT OVERLAY ═══════════ -->
+<!-- My account / My Categories / Favorites / History each open this
+     same modal directly, on their own dropdown click -- no shared tab
+     bar between them (previously all four were tabs of one "My Account"
+     overlay, so opening Favorites also surfaced My Categories and
+     History right there, which is not what a dedicated one-click
+     dropdown entry should do). Kept outside #page-home for the same
+     reason as #notes-overlay directly above. -->
+<div id="account-overlay" onclick="if(event.target===this)closeMyAccount()">
+  <div class="info-box" onclick="event.stopPropagation()" style="max-width:520px;">
+    <button class="focus-close" onclick="closeMyAccount()" aria-label="Close">✕</button>
+    <div id="account-tab-body"></div>
+  </div>
+</div>
+
+<!-- ═══════════ CREATE / EDIT CUSTOM CARD OVERLAY ═══════════ -->
+<div id="create-card-overlay" onclick="if(event.target===this)closeCreateCardForm()">
+  <div class="info-box" onclick="event.stopPropagation()" style="max-width:420px;">
+    <button class="focus-close" onclick="closeCreateCardForm()" aria-label="Close">✕</button>
+    <h3 id="create-card-title" style="margin-bottom:14px;">Create a card</h3>
+
+    <label class="scan-capture-btn" id="create-card-image-label" style="margin-bottom:12px;">
+      <input type="file" id="create-card-image-input" accept="image/*"
+        onchange="handleCreateCardImagePick(this.files[0])">
+      &#128247; Choose a Photo
+    </label>
+    <div id="create-card-image-preview" class="create-card-image-preview"></div>
+
+    <div class="create-card-field">
+      <label for="create-card-en">English</label>
+      <input type="text" id="create-card-en" placeholder="e.g. umbrella" autocomplete="off">
+    </div>
+    <div class="create-card-field">
+      <label for="create-card-ja">Japanese</label>
+      <input type="text" id="create-card-ja" placeholder="e.g. 傘" autocomplete="off">
+    </div>
+    <div class="create-card-field">
+      <label for="create-card-hi">Hindi</label>
+      <input type="text" id="create-card-hi" placeholder="e.g. छाता" autocomplete="off">
+    </div>
+    <div class="create-card-field">
+      <label for="create-card-fr">French</label>
+      <input type="text" id="create-card-fr" placeholder="e.g. parapluie" autocomplete="off">
+    </div>
+
+    <div id="create-card-status" class="create-card-status"></div>
+    <div style="display:flex; gap:8px; margin-top:10px;">
+      <button class="btn-primary" style="flex:1;" onclick="submitCustomCard()">Save</button>
+      <button class="card-action card-action-quiet" id="create-card-delete-btn"
+        style="display:none;" onclick="if(confirm('Delete this card?'))deleteCustomCard(ptwEditingCardId)">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ HOME PAGE ═══════════ -->
+<div id="page-home" class="page">
+
+  <nav class="home-nav">
+    <div class="nav-brand" onclick="showPage('home')" role="link" tabindex="0">
+      <img class="nav-logo" src="assets/icons/shabdah-logo.png" alt="Shabdah logo">
+      <span class="nav-brand-name">Shabdah</span>
+    </div>
+
+    <div class="nav-links"></div>
+
+    <div class="nav-spacer"></div>
+
+    <div class="nav-right">
+      <button class="nav-search-btn" onclick="openQuickLookup()" aria-label="Search the dictionary">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="8.5" cy="8.5" r="5.5"/><line x1="13" y1="13" x2="18" y2="18"/>
+        </svg>
+        Search
+      </button>
+      <div class="auth-nav-area" id="auth-nav-area"></div>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-script-bg" aria-hidden="true">
+      <span>あ</span><span>A</span><span>か</span><span>B</span><span>さ</span><span>C</span>
+      <span>た</span><span>T</span><span>な</span><span>N</span><span>は</span><span>H</span>
+      <span>ま</span><span>M</span><span>や</span><span>Y</span><span>ら</span><span>R</span>
+      <span>わ</span><span>W</span><span>き</span><span>K</span><span>し</span><span>S</span>
+      <span>ち</span><span>D</span><span>に</span><span>P</span><span>ひ</span><span>F</span>
+    </div>
+    <div class="hero-left">
+      <div class="hero-eyebrow">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <circle cx="8.5" cy="8.5" r="1.5"/>
+          <path d="M21 15l-5-5L5 21"/>
+        </svg>
+        Visual Vocabulary
+      </div>
+      <h1 class="hero-title">Picture the <em>language.</em></h1>
+      <p class="hero-subhead">Build fluency one picture at a time.</p>
+      <p class="hero-body">Every illustration connects Japanese, English, Hindi and French in all directions — organised by topic, remembered through pictures rather than word lists.</p>
+
+      <div class="hero-cta-row">
+        <button class="btn-primary" onclick="startLearning()">Start Learning</button>
+      </div>
+
+      <p class="hero-mvp-line">
+        A 100-concept licensing demo, in four languages. (full content)
+      </p>
+    </div>
+    <div class="hero-right" id="hero-stats-panel">
+      <div class="deco-cards" id="deco-cards" aria-hidden="true">
+        <img class="deco-card deco-card-1" id="deco-card-1" alt="">
+        <img class="deco-card deco-card-2" id="deco-card-2" alt="">
+        <img class="deco-card deco-card-3" id="deco-card-3" alt="">
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ STAT BAR ═══════════ -->
+  <section class="stat-bar" aria-label="What's in the library">
+    <div class="stat-bar-inner">
+      <div class="stat-cell">
+        <span class="stat-cell-num" id="stat-total">100</span>
+        <span class="stat-cell-label">Illustrated concepts</span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-cell-num" id="stat-cards">2,000</span>
+        <span class="stat-cell-label">Flashcards</span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-cell-num">4</span>
+        <span class="stat-cell-label">Languages, three directions</span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-cell-num" id="stat-audio">2,000</span>
+        <span class="stat-cell-label">Audio recordings</span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-cell-num" id="stat-topics">15</span>
+        <span class="stat-cell-label">Topics</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="usage-bar" class="usage-bar" style="display:none;" aria-label="Usage"></section>
+
+  <div class="home-cats">
+    <h2 class="home-cats-title">Browse by <em>topic</em></h2>
+    <p class="home-cats-sub">Sixteen everyday domains, each one illustrated in all three directions.</p>
+    <div id="home-cat-grid"></div>
+  </div>
+
+  <!-- Grammar is deliberately separate from the 16 topic categories above --
+       it's function words (pronouns, prepositions, question words...) that
+       don't illustrate the same way content words do, so it gets its own
+       entry point rather than being folded into the topic grid. (That entry
+       point is itself hidden for now -- see updateGrammarEntryPoint in script.js.) -->
+  <div class="home-grammar" id="home-grammar-section" style="display:none;">
+    <h2 class="home-cats-title">Or study <em>grammar</em></h2>
+    <p class="home-cats-sub">Pronouns, question words, prepositions and more — the building blocks every language shares.</p>
+    <div class="grammar-entry-tile" onclick="openGrammar()"
+         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openGrammar()}"
+         role="button" tabindex="0" aria-label="Browse grammar concepts">
+      <div class="grammar-entry-icon">Aあ</div>
+      <div class="grammar-entry-text">
+        <div class="grammar-entry-name">Grammar</div>
+        <div class="grammar-entry-count" id="grammar-entry-count"></div>
+      </div>
+      <div class="grammar-entry-arrow">→</div>
+    </div>
+  </div>
+
+  <div class="home-professions" id="home-professions-section">
+    <h2 class="home-cats-title">Or explore by <em>profession <span style="font-style:normal">&amp;</span> specialisation</em></h2>
+    <p class="home-cats-sub">3,515 concepts categorized across 50 professional fields — medicine, engineering, aviation, law, culinary arts, computer science, and more.</p>
+    <div class="profession-entry-tile" onclick="openCategory('professions')"
+         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openCategory('professions')}"
+         role="button" tabindex="0" aria-label="Browse professions and specialisations">
+      <div class="profession-entry-icon">&#128188;</div>
+      <div class="profession-entry-text">
+        <div class="profession-entry-name">Professions &amp; Specialisations</div>
+        <div class="profession-entry-count" id="prof-entry-count">3,515 concepts &middot; 50 specialised fields</div>
+      </div>
+      <div class="profession-entry-arrow">→</div>
+    </div>
+    <div class="profession-chips-grid" id="profession-home-chips"></div>
+  </div>
+
+  <div class="home-vision">
+    <p class="home-vision-text">One visual system. Built to carry more languages.</p>
+  </div>
+
+  <section id="reviews-section" class="home-reviews"></section>
+
+  <footer class="ptw-footer">
+    <div class="ptw-footer-grid">
+      <div class="ptw-footer-brand">
+        <img src="assets/icons/shabdah-logo.png" alt="Shabdah">
+        <p class="ptw-footer-tagline">
+          A visual dictionary and flashcard system for languages, built on illustration
+          rather than translation.
+        </p>
+      </div>
+    </div>
+    <div class="ptw-footer-base">
+    <p>
+      Flashcard content, structural design, and illustrations are original to Shabdah. &copy; Shabdah.
+    </p>
+    <p>
+      Dictionary and example-sentence data draw in part on third-party open resources, used under their respective licences.
+    </p>
+  </div>
+  </footer>
+
+</div>
+
+<!-- ═══════════ APP PAGE ═══════════ -->
+<div id="page-app" class="page">
+
+  <!-- Topbar -->
+  <div class="app-topbar">
+    <div class="topbar-home" onclick="showPage('home')">
+      <img class="ptw-footer-logo" src="assets/icons/shabdah-logo.png" alt="Shabdah logo">
+      <span style="font-size:12px;font-weight:600;color:var(--teal-dark)">Home</span>
+    </div>
+    <span class="topbar-sep">›</span>
+    <div class="topbar-crumb-wrap">
+      <span id="topbar-crumb">Loading…</span>
+    </div>
+
+    <!-- Category switcher for narrow screens -- .app-sidebar is hidden
+         below 640px (there's no room for a 15-item list next to the deck),
+         but that left phone visitors with literally no way to switch
+         categories at all once inside one, only a way back to the
+         homepage. Hidden on desktop by the same breakpoint that hides the
+         sidebar, so the two never show at once. -->
+    <select id="mobile-category-select" class="mobile-category-select"
+      onchange="if(this.value) openCategory(this.value)" aria-label="Switch category">
+      <option value="">Switch category…</option>
+    </select>
+
+    <!-- Study preferences live here, where they're actually used, rather
+         than occupying the homepage hero. -->
+    <div class="topbar-prefs">
+      <span class="topbar-prefs-label">Studying</span>
+      <select id="pref-direction" onchange="setPrefDirection(this.value)" aria-label="Study direction">
+        <option value="JA_EN">Japanese → English</option>
+        <option value="HI_EN">Hindi → English</option>
+        <option value="FR_EN">French → English</option>
+      </select>
+      <span id="pref-allowance-badge" class="yes-badge hidden" ></span>
+      <span class="topbar-prefs-label">Labels</span>
+      <select id="pref-lang" onchange="setPrefLang(this.value)" aria-label="Word label language">
+        <option value="en">English</option>
+        <option value="ja">Japanese</option>
+        <option value="hi">Hindi</option>
+        <option value="fr">French</option>
+      </select>
+    </div>
+
+    <div class="topbar-actions">
+      <div id="sync-indicator" class="sync-indicator" style="display:none;" title="Syncing changes...">
+        <span class="sync-indicator-icon">&#8635;</span>
+        <span class="sync-indicator-text">Syncing</span>
+      </div>
+      <button class="topbar-search-btn" onclick="openQuickLookup()">
+        <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="8.5" cy="8.5" r="5.5"/><line x1="13" y1="13" x2="18" y2="18"/>
+        </svg>
+        Search
+      </button>
+      <button class="topbar-btn" id="stars-btn" onclick="toggleStarsOnly()">★ Starred</button>
+      <div class="auth-nav-area"></div>
+    </div>
+  </div>
+
+  <!-- Body -->
+  <div class="app-body">
+
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <div id="sidebar-nav"></div>
+    </aside>
+
+    <!-- Main -->
+    <main class="app-main">
+      <div id="cat-header" class="cat-header">
+        <div class="cat-header-info">
+          <div id="cat-header-label">Category</div>
+          <div id="cat-header-count">0 words</div>
+        </div>
+        <div id="prof-filter-container" class="prof-filter-container" style="display:none;">
+          <label for="prof-subcat-select" class="prof-filter-label">Field:</label>
+          <select id="prof-subcat-select" class="prof-subcat-select" onchange="setProfessionSubcat(this.value)">
+            <option value="all">All Fields (3,515 concepts)</option>
+          </select>
+        </div>
+      </div>
+      <div id="card-deck" class="deck"></div>
+    </main>
+
+  </div>
+</div>
+
+<script src="auth.js?v=10"></script>
+<script src="srs.js?v=9"></script>
+<script src="entitlement.js?v=9"></script>
+<script src="custom-cards.js?v=1"></script>
+<script src="notes.js?v=9"></script>
+<script src="reviews.js?v=8"></script>
+<script src="account.js?v=11"></script>
+<script src="offline-download.js?v=1"></script>
+<script src="stats.js?v=8"></script>
+<script src="gen-dict.js?v=1"></script>
+<script src="mobile-lookup.js?v=3"></script>
+<script src="script.js?v=32"></script>
+</body>
+</html>
