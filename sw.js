@@ -10,7 +10,7 @@
    Bump CACHE_VERSION on every deploy. Old caches are deleted on
    activate, so a stale stylesheet can never outlive a release.       */
 
-const CACHE_VERSION = 'v88';
+const CACHE_VERSION = 'v89';
 const SHELL_CACHE   = `ptw-shell-${CACHE_VERSION}`;
 const ASSET_CACHE   = `ptw-assets-${CACHE_VERSION}`;
 
