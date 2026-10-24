@@ -3048,3 +3048,52 @@ h1, h2, h3,
     flex: 1;
   }
 }
+
+/* Demo homepage: #page-home is a column flexbox. margin-left:auto on
+   .home-nav, .home-vision and .ptw-footer (the v3.2 sidebar undo) turns
+   those flex items into shrink-wrapped bars and pins them to the right.
+   Stretch them, center the Shabdah mark, and center the footer copy. */
+#page-home > .home-nav,
+#page-home > .home-vision,
+#page-home > .ptw-footer,
+#page-home > .stat-bar,
+#page-home > .home-reviews {
+  width: 100%;
+  max-width: none;
+  align-self: stretch;
+  margin-left: 0;
+  margin-right: 0;
+}
+#page-home > .home-nav {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+}
+#page-home > .home-nav .nav-brand {
+  grid-column: 2;
+  justify-self: center;
+}
+#page-home > .home-nav .nav-links,
+#page-home > .home-nav .nav-spacer { display: none; }
+#page-home > .home-nav .nav-right {
+  grid-column: 3;
+  justify-self: end;
+}
+#page-home > .ptw-footer .ptw-footer-grid {
+  display: flex;
+  justify-content: center;
+  max-width: 720px;
+}
+#page-home > .ptw-footer .ptw-footer-brand {
+  align-items: center;
+  text-align: center;
+}
+#page-home > .ptw-footer .ptw-footer-tagline {
+  max-width: 420px;
+}
+#page-home > .ptw-footer .ptw-footer-base {
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+}

@@ -48,7 +48,7 @@
   }
   </script>
 
-  <link rel="stylesheet" href="styles.css?v=20">
+  <link rel="stylesheet" href="styles.css?v=21">
   <script>
     // Offline support. Registered on every page so the whole site,
     // not just the app, survives losing connection.
@@ -319,7 +319,6 @@
         </svg>
         Search
       </button>
-      <div class="auth-nav-area" id="auth-nav-area"></div>
     </div>
   </nav>
 
@@ -415,22 +414,6 @@
     </div>
   </div>
 
-  <div class="home-professions" id="home-professions-section">
-    <h2 class="home-cats-title">Or explore by <em>profession <span style="font-style:normal">&amp;</span> specialisation</em></h2>
-    <p class="home-cats-sub">3,515 concepts categorized across 50 professional fields — medicine, engineering, aviation, law, culinary arts, computer science, and more.</p>
-    <div class="profession-entry-tile" onclick="openCategory('professions')"
-         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openCategory('professions')}"
-         role="button" tabindex="0" aria-label="Browse professions and specialisations">
-      <div class="profession-entry-icon">&#128188;</div>
-      <div class="profession-entry-text">
-        <div class="profession-entry-name">Professions &amp; Specialisations</div>
-        <div class="profession-entry-count" id="prof-entry-count">3,515 concepts &middot; 50 specialised fields</div>
-      </div>
-      <div class="profession-entry-arrow">→</div>
-    </div>
-    <div class="profession-chips-grid" id="profession-home-chips"></div>
-  </div>
-
   <div class="home-vision">
     <p class="home-vision-text">One visual system. Built to carry more languages.</p>
   </div>
@@ -515,7 +498,7 @@
         Search
       </button>
       <button class="topbar-btn" id="stars-btn" onclick="toggleStarsOnly()">★ Starred</button>
-      <div class="auth-nav-area"></div>
+
     </div>
   </div>
 
